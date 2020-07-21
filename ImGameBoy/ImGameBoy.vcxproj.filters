@@ -45,6 +45,9 @@
     <ClCompile Include="imgui\imgui_impl_opengl3.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
+    <ClCompile Include="emu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -79,6 +82,9 @@
     </ClInclude>
     <ClInclude Include="imgui\imgui_memory_editor.h">
       <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="registers.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

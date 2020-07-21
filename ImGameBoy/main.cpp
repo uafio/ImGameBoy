@@ -167,7 +167,8 @@ int main( int argc, char** argv )
 
         ImGui::DockSpaceOverViewport();
 
-        //
+        extern void wingb( GLFWwindow * window );
+        wingb( window );
 
         // Rendering
         ImGui::Render();
