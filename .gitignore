@@ -1,0 +1,14 @@
+
+.vs/ImGameBoy/v15/.suo
+*.db
+*.opendb
+*.ipch
+*.dll
+ImGameBoy/gl3w/lib-vc2017/glfw3dll.lib
+*.obj
+*.log
+*.tlog
+*.pdb
+*.exe
+*.iobj
+*.ipdb
