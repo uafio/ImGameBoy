@@ -14,24 +14,6 @@
 #include "imgui/imgui.h"
 #include "glfw3.h"
 
-void* get_file_content( const char* fname )
-{
-    std::fstream infile( fname, std::fstream::in | std::fstream::binary | std::fstream::ate );
-    if ( infile.is_open() == false ) {
-        std::perror( __FUNCTION__ );
-        return nullptr;
-    }
-
-    size_t size = infile.tellg();
-    void* data = malloc( size );
-
-    infile.seekg( std::fstream::beg );
-
-    infile.read( reinterpret_cast< char* >( data ), size );
-
-    return data;
-}
-
 void wingb( GLFWwindow* window )
 {
 
