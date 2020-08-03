@@ -27,7 +27,7 @@ struct Memory
             uint8_t NA[0x60];               // Not Usable
             uint8_t io[0x80];               // I/O Registers
             uint8_t hram[0x7f];             // High RAM
-            uint8_t ie;                     // Interrupt Enable Register
+            bool ie;                        // Interrupt Enable Register
         };
 
     };

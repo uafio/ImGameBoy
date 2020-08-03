@@ -1,7 +1,7 @@
 #pragma once
 #include <stdint.h>
 
-struct REGISTER {
+struct Registers {
     union {
         struct {
             union {
@@ -42,7 +42,7 @@ struct REGISTER {
     uint16_t SP;
     uint16_t PC;
 
-    REGISTER( void )
+    Registers( void )
         : AF( 0 ), BC( 0 ), DE( 0 ), HL( 0 ), SP( 0 ), PC( 0 )
     {
     }

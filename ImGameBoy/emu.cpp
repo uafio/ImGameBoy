@@ -14,11 +14,12 @@
 #include "imgui/imgui.h"
 #include "glfw3.h"
 
-#include "registers.h"
-#include "memory.h"
+#include "emulator.h"
 
 void wingb( GLFWwindow* window )
 {
+    static Emulator* emu = new Emulator();
+    static bool dbg = true;
 
     if ( ImGui::BeginMainMenuBar() ) {
         if ( ImGui::BeginMenu( "File" ) ) {
@@ -50,6 +51,11 @@ void wingb( GLFWwindow* window )
             ImGui::EndMenu();
         }
 
+        if ( ImGui::BeginMenu( "Settings" ) ) {
+            ImGui::Checkbox( "Debugger", &dbg );
+            ImGui::EndMenu();
+        }
+
         ImGui::Indent( ImGui::GetWindowWidth() - ImGui::GetFontSize() * 7 );
         ImGui::Text( "(%.1f FPS)", ImGui::GetIO().Framerate );
         ImGui::Unindent();
@@ -57,8 +63,12 @@ void wingb( GLFWwindow* window )
         ImGui::EndMainMenuBar();
     }
 
+    if ( dbg ) {
+        emu->debugger();    
+    }
+    emu->cycle();
+
     ImGui::Begin( "Main" );
-
-
+    emu->draw();
     ImGui::End();
 }

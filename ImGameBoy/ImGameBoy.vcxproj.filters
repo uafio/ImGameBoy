@@ -89,5 +89,11 @@
     <ClInclude Include="memory.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="emulator.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="debugger.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
