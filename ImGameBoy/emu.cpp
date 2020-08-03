@@ -14,6 +14,9 @@
 #include "imgui/imgui.h"
 #include "glfw3.h"
 
+#include "registers.h"
+#include "memory.h"
+
 void wingb( GLFWwindow* window )
 {
 
