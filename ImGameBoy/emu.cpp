@@ -66,7 +66,8 @@ void wingb( GLFWwindow* window )
     if ( dbg ) {
         emu->debugger();    
     }
-    emu->cycle();
+
+    emu->step();
 
     ImGui::Begin( "Main" );
     emu->draw();

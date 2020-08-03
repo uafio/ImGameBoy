@@ -3,6 +3,7 @@
 #include "imgui/imgui_memory_editor.h"
 #include "memory.h"
 #include "registers.h"
+#include "instruction.h"
 
 class Debugger
 {
@@ -10,8 +11,13 @@ private:
     MemoryEditor mViewer;
 
 public:
+    bool running;
+    bool step;
+
     Debugger( void )
     {
+        running = false;
+        step = true;
     }
 
     ~Debugger( void )
@@ -138,10 +144,42 @@ public:
         if ( ImGui::IsItemClicked( ImGuiMouseButton_Left ) ) {
             r->Flag.C ^= 1;
         }
-
-
         ImGui::PopStyleColor();   
+
+
+        if ( ImGui::Button( "Run" ) ) {
+            running = true;
+        }
+        ImGui::SameLine();
+        if ( ImGui::Button( "Step" ) ) {
+            step = true;
+        }
+        ImGui::SameLine();
+        if ( ImGui::Button( "Break" ) ) {
+            running = false;
+        }
+
+
         ImGui::Unindent();
+        ImGui::End();
+    }
+
+    void show_disassembly( Memory* mem, Registers* r, Instruction** op )
+    {
+        ImGui::Begin( "Disassembly" );
+
+        // TODO: Implement ImGui List Clipper
+        for ( uint16_t i = 0; i < _countof( mem->rom ); ) {
+            Instruction* cur = op[mem->rom[i]];
+            if ( r->PC == i ) {
+                ImGui::Text( "> %04X: %s", i, cur->dis );
+            } else {
+                ImGui::Text( "  %04X: %s", i, cur->dis );
+            }
+            i += cur->length;
+        }
+
+
         ImGui::End();
     }
 

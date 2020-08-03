@@ -268,21 +268,25 @@ class Emulator
 private:
     Registers r;
     Memory m;
+    Instruction* opcode[0x100];
     Debugger dbg;
 
 public:
     Emulator( void )
     {
         memcpy( m.map, bootrom, sizeof( bootrom ) );
+        for ( int i = 0; i < _countof( opcode ); i++ ) {
+            opcode[i] = new Instruction();
+        }
     }
 
     ~Emulator( void )
     {
     }
 
-    bool cycle( void )
+    void step( void )
     {
-        return true;
+        opcode[m.map[r.PC]]->execute( &m, &r );
     }
 
     void draw( void )
@@ -293,6 +297,7 @@ public:
     {
         dbg.show_memory( &m );
         dbg.show_registers( &r );
+        dbg.show_disassembly( &m, &r, opcode );
     }
 
 };
