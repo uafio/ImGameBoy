@@ -5,19 +5,22 @@
 #include "registers.h"
 #include "instruction.h"
 
+enum class StepState
+{
+    STOP = 0,
+    RUN,
+    STEP,
+};
+
 class Debugger
 {
 private:
     MemoryEditor mViewer;
 
 public:
-    bool running;
-    bool step;
-
+    StepState sstate;
     Debugger( void )
     {
-        running = false;
-        step = true;
     }
 
     ~Debugger( void )
@@ -148,15 +151,15 @@ public:
 
 
         if ( ImGui::Button( "Run" ) ) {
-            running = true;
+            sstate = StepState::RUN;
         }
         ImGui::SameLine();
         if ( ImGui::Button( "Step" ) ) {
-            step = true;
+            sstate = StepState::STEP;
         }
         ImGui::SameLine();
         if ( ImGui::Button( "Break" ) ) {
-            running = false;
+            sstate = StepState::STOP;
         }
 
 

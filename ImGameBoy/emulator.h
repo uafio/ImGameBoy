@@ -275,9 +275,16 @@ public:
     Emulator( void )
     {
         memcpy( m.map, bootrom, sizeof( bootrom ) );
+    
+        opcode[0] = new InstructionNop();
+
         for ( int i = 0; i < _countof( opcode ); i++ ) {
-            opcode[i] = new Instruction();
+            if ( opcode[i] == nullptr ) {
+                opcode[i] = new Instruction();
+            }
         }
+
+
     }
 
     ~Emulator( void )
@@ -286,7 +293,12 @@ public:
 
     void step( void )
     {
-        opcode[m.map[r.PC]]->execute( &m, &r );
+        if ( dbg.sstate != StepState::STOP ) {
+            opcode[m.map[r.PC]]->execute( &m, &r );
+            if ( dbg.sstate == StepState::STEP ) {
+                dbg.sstate = StepState::STOP;
+            }
+        }
     }
 
     void draw( void )

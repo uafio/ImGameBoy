@@ -8,15 +8,37 @@ private:
 
 public:
     const char* dis;
-    const int length;
+    int length;
 
     Instruction( void )
-        : dis( "Unknown instruction" ), length( 2 )
+        : dis( "Unknown instruction" ), length( 1 )
+    {
+    }
+
+    Instruction( const char* d, const int l )
+    {
+        dis = d;
+        length = l;
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->PC += length;
+    }
+};
+
+
+class InstructionNop : public Instruction
+{
+public:
+    InstructionNop( void )
+        : Instruction::Instruction( "NOP", 1 )
     {
     }
 
     virtual void execute( Memory* m, Registers* r )
     {
+        r->PC += length;
     }
 };
 
