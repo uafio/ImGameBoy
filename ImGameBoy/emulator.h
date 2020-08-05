@@ -277,6 +277,7 @@ public:
         memcpy( m.map, bootrom, sizeof( bootrom ) );
     
         opcode[0] = new InstructionNop();
+        opcode[1] = new InstructionLdBC();
 
         for ( int i = 0; i < _countof( opcode ); i++ ) {
             if ( opcode[i] == nullptr ) {

@@ -1,4 +1,5 @@
 #pragma once
+#include <stdint.h>
 #include "memory.h"
 #include "registers.h"
 
@@ -43,3 +44,17 @@ public:
 };
 
 
+class InstructionLdBC : public Instruction
+{
+public:
+    InstructionLdBC( void )
+        : Instruction::Instruction( "LD BC, u16", 3 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->BC = *(uint16_t*)&m->map[r->PC + 1];
+        r->PC += length;
+    }
+};
