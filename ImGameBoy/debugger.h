@@ -172,14 +172,19 @@ public:
         ImGui::Begin( "Disassembly" );
 
         // TODO: Implement ImGui List Clipper
-        for ( uint16_t i = 0; i < _countof( mem->rom ); ) {
-            Instruction* cur = op[mem->rom[i]];
-            if ( r->PC == i ) {
-                ImGui::Text( "> %04X: %s", i, cur->dis );
+
+        for ( uint16_t addr = 0; addr < _countof( mem->rom ); ) {
+            Instruction* cur = op[mem->rom[addr]];
+
+            char dis[64];
+            cur->dis( dis, sizeof( dis ), mem, addr );
+
+            if ( r->PC == addr ) {
+                ImGui::Text( "> %04X: %s", addr, dis );
             } else {
-                ImGui::Text( "  %04X: %s", i, cur->dis );
+                ImGui::Text( "  %04X: %s", addr, dis );
             }
-            i += cur->length;
+            addr += cur->length;
         }
 
 

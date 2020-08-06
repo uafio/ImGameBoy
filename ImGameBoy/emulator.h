@@ -276,8 +276,17 @@ public:
     {
         memcpy( m.map, bootrom, sizeof( bootrom ) );
     
-        opcode[0] = new InstructionNop();
-        opcode[1] = new InstructionLdBC();
+        opcode[0x00] = new InstructionNop();
+        opcode[0x01] = new InstructionLdBC();
+        opcode[0x02] = new InstructionLdBCA();
+        opcode[0x03] = new InstructionIncBC();
+        opcode[0x04] = new InstructionIncB();
+        opcode[0x05] = new InstructionDecB();
+        opcode[0x06] = new InstructionLdB();
+        opcode[0x07] = new InstructionRLCA();
+        opcode[0x08] = new InstructionLdn16SP();
+        opcode[0x09] = new InstructionAddHLBC();
+
 
         for ( int i = 0; i < _countof( opcode ); i++ ) {
             if ( opcode[i] == nullptr ) {
