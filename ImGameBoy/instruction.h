@@ -48,11 +48,23 @@ public:
 
     uint8_t rlc( Registers* r, uint8_t operand )
     {
-        r->Flag.Z = 0;
-        r->Flag.N = 0;
-        r->Flag.H = 0;
+        r->Flag.Z = r->Flag.N = r->Flag.H = 0;
         r->Flag.C = operand >> 7;
         return ( operand << 1 ) + r->Flag.C;
+    }
+
+    uint8_t rl( Registers* r, uint8_t operand )
+    {
+        r->Flag.Z = r->Flag.N = r->Flag.H = 0;
+        r->Flag.C = operand >> 7;
+        return operand << 1;
+    }
+
+    uint8_t rrc( Registers* r, uint8_t operand )
+    {
+        r->Flag.Z = r->Flag.N = r->Flag.H = 0;
+        r->Flag.C = operand & 1;
+        return ( operand >> 1 ) | ( r->Flag.C << 7 );
     }
 
     void add_hl_r16( Registers* r, uint16_t r16 )
@@ -274,5 +286,317 @@ public:
     virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
     {
         snprintf( dst, size, "add HL, BC" );
+    }
+};
+
+
+
+class InstructionLdABC : public Instruction
+{
+public:
+    InstructionLdABC( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->A = m->rom[r->BC];
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "ld A, (BC)" );
+    }
+};
+
+
+class InstructionDecBC : public Instruction
+{
+public:
+    InstructionDecBC( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->BC--;
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "dec BC" );
+    }
+};
+
+
+class InstructionIncC : public Instruction
+{
+public:
+    InstructionIncC( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->C = increment( r, r->C );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "inc C" );
+    }
+};
+
+
+class InstructionDecC : public Instruction
+{
+public:
+    InstructionDecC( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->C = decrement( r, r->C );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "dec C" );
+    }
+};
+
+
+class InstructionLdC : public Instruction
+{
+public:
+    InstructionLdC( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->C = m->rom[r->PC + 1];
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "ld C, %#02x", mem->rom[addr + 1] );
+    }
+};
+
+
+class InstructionRRCA : public Instruction
+{
+public:
+    InstructionRRCA( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->A = rrc( r, r->A );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "rrca" );
+    }
+};
+
+
+class InstructionStop : public Instruction
+{
+public:
+    InstructionStop( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        if ( m->rom[r->PC + 1] == 0 ) {
+            // TODO: need a way to change dbg.sstate = StepState::STOP;
+        }
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "stop" );
+    }
+};
+
+
+class InstructionLdDE : public Instruction
+{
+public:
+    InstructionLdDE( void )
+        : Instruction::Instruction( 3 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->DE = *(uint16_t*)&m->rom[r->PC + 1];
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "ld DE, %#04x", *(uint16_t*)&mem->rom[ addr + 1 ] );
+    }
+};
+
+
+class InstructionLdDEA : public Instruction
+{
+public:
+    InstructionLdDEA( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        m->rom[r->DE] = r->A;
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "ld (DE), A" );
+    }
+};
+
+class InstructionIncDE : public Instruction
+{
+public:
+    InstructionIncDE( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->DE++;
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "inc DE" );
+    }
+};
+
+class InstructionIncD : public Instruction
+{
+public:
+    InstructionIncD( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->D = increment( r, r->D );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "inc D" );
+    }
+};
+
+class InstructionDecD : public Instruction
+{
+public:
+    InstructionDecD( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->D = decrement( r, r->D );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "dec D" );
+    }
+};
+
+class InstructionLdD : public Instruction
+{
+public:
+    InstructionLdD( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->D = m->rom[r->PC + 1];
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "ld D, %#02x", mem->rom[ addr + 1 ] );
+    }
+};
+
+class InstructionRLA : public Instruction
+{
+public:
+    InstructionRLA( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->A = rl( r, r->A );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "rla" );
+    }
+};
+
+class InstructionJPe8 : public Instruction
+{
+public:
+    InstructionJPe8( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->PC += m->rom[r->PC + 1];
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "jp %#x", addr + length + mem->rom[addr + 1] );
     }
 };

@@ -286,6 +286,22 @@ public:
         opcode[0x07] = new InstructionRLCA();
         opcode[0x08] = new InstructionLdn16SP();
         opcode[0x09] = new InstructionAddHLBC();
+        opcode[0x0A] = new InstructionLdABC();
+        opcode[0x0B] = new InstructionDecBC();
+        opcode[0x0C] = new InstructionIncC();
+        opcode[0x0D] = new InstructionDecC();
+        opcode[0x0E] = new InstructionLdC();
+        opcode[0x0F] = new InstructionRRCA();
+
+        opcode[0x10] = new InstructionStop();
+        opcode[0x11] = new InstructionLdDE();
+        opcode[0x12] = new InstructionLdDEA();
+        opcode[0x13] = new InstructionIncDE();
+        opcode[0x14] = new InstructionIncD();
+        opcode[0x15] = new InstructionDecD();
+        opcode[0x16] = new InstructionLdD();
+        opcode[0x17] = new InstructionRLA();
+        opcode[0x18] = new InstructionJPe8();
 
 
         for ( int i = 0; i < _countof( opcode ); i++ ) {
