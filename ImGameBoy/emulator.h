@@ -308,7 +308,26 @@ public:
         opcode[0x1C] = new InstructionIncE();
         opcode[0x1D] = new InstructionDecE();
         opcode[0x1E] = new InstructionLdE();
-        opcode[0x20] = new InstructionRRA();
+        opcode[0x1F] = new InstructionRRA();
+
+        opcode[0x20] = new InstructionJRNZ();
+        opcode[0x21] = new InstructionLdHL();
+        opcode[0x22] = new InstructionLdHLIA();
+        opcode[0x23] = new InstructionIncHL();
+        opcode[0x24] = new InstructionIncH();
+        opcode[0x25] = new InstructionDecH();
+        opcode[0x26] = new InstructionLdH();
+        // TODO opcode[0x27] = new InstructionDAA();
+        opcode[0x28] = new InstructionJRZ();
+        opcode[0x29] = new InstructionAddHLHL();
+        opcode[0x2A] = new InstructionLdAHLI();
+        opcode[0x2B] = new InstructionDecHL();
+        opcode[0x2C] = new InstructionIncL();
+        opcode[0x2D] = new InstructionDecL();
+        opcode[0x2E] = new InstructionLdL();
+        opcode[0x2F] = new InstructionCPL();
+
+
 
 
 
