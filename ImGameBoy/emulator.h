@@ -302,6 +302,14 @@ public:
         opcode[0x16] = new InstructionLdD();
         opcode[0x17] = new InstructionRLA();
         opcode[0x18] = new InstructionJPe8();
+        opcode[0x19] = new InstructionAddHLDE();
+        opcode[0x1A] = new InstructionLdADE();
+        opcode[0x1B] = new InstructionDecDE();
+        opcode[0x1C] = new InstructionIncE();
+        opcode[0x1D] = new InstructionDecE();
+        opcode[0x1E] = new InstructionLdE();
+        opcode[0x20] = new InstructionRRA();
+
 
 
         for ( int i = 0; i < _countof( opcode ); i++ ) {
