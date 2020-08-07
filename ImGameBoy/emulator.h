@@ -327,7 +327,14 @@ public:
         opcode[0x2E] = new InstructionLdL();
         opcode[0x2F] = new InstructionCPL();
 
-
+        opcode[0x30] = new InstructionJRNC();
+        opcode[0x31] = new InstructionLdSP();
+        opcode[0x32] = new InstructionLdHLA();
+        opcode[0x33] = new InstructionIncSP();
+        opcode[0x34] = new InstructionIncHLderef();
+        opcode[0x35] = new InstructionDecHLderef();
+        opcode[0x36] = new InstructionLdHLderef();
+        opcode[0x37] = new InstructionSCF();
 
 
 
