@@ -278,7 +278,7 @@ public:
         memcpy( m.map, bootrom, sizeof( bootrom ) );
     
         opcode[0x00] = new InstructionNop();
-        opcode[0x01] = new InstructionLdBC();
+        opcode[0x01] = new InstructionLdBCu16();
         opcode[0x02] = new InstructionLdBCA();
         opcode[0x03] = new InstructionIncBC();
         opcode[0x04] = new InstructionIncB();
@@ -344,6 +344,24 @@ public:
         opcode[0x3D] = new InstructionDecA();
         opcode[0x3E] = new InstructionLdA();
         opcode[0x3F] = new InstructionCCF();
+
+        opcode[0x40] = new InstructionLdBB();
+        opcode[0x41] = new InstructionLdBC();
+        opcode[0x42] = new InstructionLdBD();
+        opcode[0x43] = new InstructionLdBE();
+        opcode[0x44] = new InstructionLdBH();
+        opcode[0x45] = new InstructionLdBL();
+        opcode[0x46] = new InstructionLdBHL();
+        opcode[0x47] = new InstructionLdBA();
+        opcode[0x48] = new InstructionLdCB();
+        opcode[0x49] = new InstructionLdCC();
+        opcode[0x4A] = new InstructionLdCD();
+        opcode[0x4B] = new InstructionLdCE();
+        opcode[0x4C] = new InstructionLdCH();
+        opcode[0x4D] = new InstructionLdCL();
+        opcode[0x4E] = new InstructionLdCHL();
+        opcode[0x4F] = new InstructionLdCA();
+
 
 
 
