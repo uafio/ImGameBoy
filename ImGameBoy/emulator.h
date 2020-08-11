@@ -411,7 +411,7 @@ public:
         opcode[0x7C] = new InstructionLdAH();
         opcode[0x7D] = new InstructionLdAL();
         opcode[0x7E] = new InstructionLdAHL();
-
+        opcode[0x7F] = new InstructionLdAA();
 
 
 

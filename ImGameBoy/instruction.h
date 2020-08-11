@@ -2650,3 +2650,24 @@ public:
         snprintf( dst, size, "LD A, (HL)" );
     }
 };
+
+
+
+class InstructionLdAA : public Instruction
+{
+public:
+    InstructionLdAA( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "LD A, A" );
+    }
+};
