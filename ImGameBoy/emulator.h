@@ -330,7 +330,7 @@ public:
 
         opcode[0x30] = new InstructionJRNC();
         opcode[0x31] = new InstructionLdSP();
-        opcode[0x32] = new InstructionLdHLA();
+        opcode[0x32] = new InstructionLdHLDecA();
         opcode[0x33] = new InstructionIncSP();
         opcode[0x34] = new InstructionIncHLderef();
         opcode[0x35] = new InstructionDecHLderef();
@@ -395,6 +395,22 @@ public:
         opcode[0x6D] = new InstructionLdLL();
         opcode[0x6E] = new InstructionLdHL();
         opcode[0x6F] = new InstructionLdLA();
+
+        opcode[0x70] = new InstructionLdHLB();
+        opcode[0x71] = new InstructionLdHLC();
+        opcode[0x72] = new InstructionLdHLD();
+        opcode[0x73] = new InstructionLdHLE();
+        opcode[0x74] = new InstructionLdHLH();
+        opcode[0x75] = new InstructionLdHLL();
+        opcode[0x76] = new InstructionHALT();
+        opcode[0x77] = new InstructionLdHLA();
+        opcode[0x78] = new InstructionLdAB();
+        opcode[0x79] = new InstructionLdAC();
+        opcode[0x7A] = new InstructionLdAD();
+        opcode[0x7B] = new InstructionLdAE();
+        opcode[0x7C] = new InstructionLdAH();
+        opcode[0x7D] = new InstructionLdAL();
+        opcode[0x7E] = new InstructionLdAHL();
 
 
 
