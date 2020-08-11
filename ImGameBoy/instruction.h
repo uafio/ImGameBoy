@@ -3,10 +3,10 @@
 #include "memory.h"
 #include "registers.h"
 
+
 class Instruction
 {
 private:
-
 public:
     int length;
 
@@ -83,7 +83,6 @@ public:
     }
 };
 
-
 class InstructionNop : public Instruction
 {
 public:
@@ -103,7 +102,6 @@ public:
     }
 };
 
-
 class InstructionLdBC : public Instruction
 {
 public:
@@ -120,11 +118,9 @@ public:
 
     virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
     {
-        snprintf( dst, size, "LD BC, %#04x", *(uint16_t*)&mem->rom[ addr + 1 ] );
+        snprintf( dst, size, "LD BC, %#04x", *(uint16_t*)&mem->rom[addr + 1] );
     }
 };
-
-
 
 class InstructionLdBCA : public Instruction
 {
@@ -146,7 +142,6 @@ public:
     }
 };
 
-
 class InstructionIncBC : public Instruction
 {
 public:
@@ -166,8 +161,6 @@ public:
         snprintf( dst, size, "INC BC" );
     }
 };
-
-
 
 class InstructionIncB : public Instruction
 {
@@ -189,7 +182,6 @@ public:
     }
 };
 
-
 class InstructionDecB : public Instruction
 {
 public:
@@ -209,8 +201,6 @@ public:
         snprintf( dst, size, "DEC B" );
     }
 };
-
-
 
 class InstructionLdB : public Instruction
 {
@@ -232,7 +222,6 @@ public:
     }
 };
 
-
 class InstructionRLCA : public Instruction
 {
 public:
@@ -252,7 +241,6 @@ public:
         snprintf( dst, size, "RLCA" );
     }
 };
-
 
 class InstructionLdn16SP : public Instruction
 {
@@ -275,7 +263,6 @@ public:
     }
 };
 
-
 class InstructionAddHLBC : public Instruction
 {
 public:
@@ -295,8 +282,6 @@ public:
         snprintf( dst, size, "ADD HL, BC" );
     }
 };
-
-
 
 class InstructionLdABC : public Instruction
 {
@@ -318,7 +303,6 @@ public:
     }
 };
 
-
 class InstructionDecBC : public Instruction
 {
 public:
@@ -338,7 +322,6 @@ public:
         snprintf( dst, size, "DEC BC" );
     }
 };
-
 
 class InstructionIncC : public Instruction
 {
@@ -360,7 +343,6 @@ public:
     }
 };
 
-
 class InstructionDecC : public Instruction
 {
 public:
@@ -380,7 +362,6 @@ public:
         snprintf( dst, size, "DEC C" );
     }
 };
-
 
 class InstructionLdC : public Instruction
 {
@@ -402,7 +383,6 @@ public:
     }
 };
 
-
 class InstructionRRCA : public Instruction
 {
 public:
@@ -422,7 +402,6 @@ public:
         snprintf( dst, size, "RRCA" );
     }
 };
-
 
 class InstructionStop : public Instruction
 {
@@ -446,7 +425,6 @@ public:
     }
 };
 
-
 class InstructionLdDE : public Instruction
 {
 public:
@@ -463,10 +441,9 @@ public:
 
     virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
     {
-        snprintf( dst, size, "LD DE, %#04x", *(uint16_t*)&mem->rom[ addr + 1 ] );
+        snprintf( dst, size, "LD DE, %#04x", *(uint16_t*)&mem->rom[addr + 1] );
     }
 };
-
 
 class InstructionLdDEA : public Instruction
 {
@@ -564,7 +541,7 @@ public:
 
     virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
     {
-        snprintf( dst, size, "LD D, %#02x", mem->rom[ addr + 1 ] );
+        snprintf( dst, size, "LD D, %#02x", mem->rom[addr + 1] );
     }
 };
 
@@ -608,7 +585,6 @@ public:
     }
 };
 
-
 class InstructionAddHLDE : public Instruction
 {
 public:
@@ -628,7 +604,6 @@ public:
         snprintf( dst, size, "ADD HL, DE" );
     }
 };
-
 
 class InstructionLdADE : public Instruction
 {
@@ -650,8 +625,6 @@ public:
     }
 };
 
-
-
 class InstructionDecDE : public Instruction
 {
 public:
@@ -671,8 +644,6 @@ public:
         snprintf( dst, size, "DEC DE" );
     }
 };
-
-
 
 class InstructionIncE : public Instruction
 {
@@ -694,7 +665,6 @@ public:
     }
 };
 
-
 class InstructionDecE : public Instruction
 {
 public:
@@ -714,8 +684,6 @@ public:
         snprintf( dst, size, "DEC E" );
     }
 };
-
-
 
 class InstructionLdE : public Instruction
 {
@@ -737,8 +705,6 @@ public:
     }
 };
 
-
-
 class InstructionRRA : public Instruction
 {
 public:
@@ -758,7 +724,6 @@ public:
         snprintf( dst, size, "RRA" );
     }
 };
-
 
 class InstructionJRNZ : public Instruction
 {
@@ -782,8 +747,6 @@ public:
     }
 };
 
-
-
 class InstructionLdHL : public Instruction
 {
 public:
@@ -800,7 +763,7 @@ public:
 
     virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
     {
-        snprintf( dst, size, "LD HL, %#04x", *(uint16_t*)&mem->rom[addr+1] );
+        snprintf( dst, size, "LD HL, %#04x", *(uint16_t*)&mem->rom[addr + 1] );
     }
 };
 
@@ -844,7 +807,6 @@ public:
     }
 };
 
-
 class InstructionIncH : public Instruction
 {
 public:
@@ -864,7 +826,6 @@ public:
         snprintf( dst, size, "INC H" );
     }
 };
-
 
 class InstructionDecH : public Instruction
 {
@@ -928,7 +889,6 @@ public:
     }
 };
 
-
 class InstructionAddHLHL : public Instruction
 {
 public:
@@ -948,7 +908,6 @@ public:
         snprintf( dst, size, "ADD HL, HL" );
     }
 };
-
 
 class InstructionLdAHLI : public Instruction
 {
@@ -970,7 +929,6 @@ public:
     }
 };
 
-
 class InstructionDecHL : public Instruction
 {
 public:
@@ -990,7 +948,6 @@ public:
         snprintf( dst, size, "DEC HL" );
     }
 };
-
 
 class InstructionIncL : public Instruction
 {
@@ -1012,7 +969,6 @@ public:
     }
 };
 
-
 class InstructionDecL : public Instruction
 {
 public:
@@ -1032,7 +988,6 @@ public:
         snprintf( dst, size, "DEC L" );
     }
 };
-
 
 class InstructionLdL : public Instruction
 {
@@ -1054,7 +1009,6 @@ public:
     }
 };
 
-
 class InstructionCPL : public Instruction
 {
 public:
@@ -1075,7 +1029,6 @@ public:
         snprintf( dst, size, "CPL" );
     }
 };
-
 
 class InstructionJRNC : public Instruction
 {
@@ -1099,7 +1052,6 @@ public:
     }
 };
 
-
 class InstructionLdSP : public Instruction
 {
 public:
@@ -1119,7 +1071,6 @@ public:
         snprintf( dst, size, "LD SP, %#04x", *(uint16_t*)&mem->rom[addr + 1] );
     }
 };
-
 
 class InstructionLdHLA : public Instruction
 {
@@ -1141,7 +1092,6 @@ public:
     }
 };
 
-
 class InstructionIncSP : public Instruction
 {
 public:
@@ -1161,7 +1111,6 @@ public:
         snprintf( dst, size, "INC SP" );
     }
 };
-
 
 class InstructionIncHLderef : public Instruction
 {
@@ -1183,7 +1132,6 @@ public:
     }
 };
 
-
 class InstructionDecHLderef : public Instruction
 {
 public:
@@ -1203,7 +1151,6 @@ public:
         snprintf( dst, size, "DEC (HL)" );
     }
 };
-
 
 class InstructionLdHLderef : public Instruction
 {
@@ -1243,5 +1190,186 @@ public:
     virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
     {
         snprintf( dst, size, "SCF" );
+    }
+};
+
+
+class InstructionJRC : public Instruction
+{
+public:
+    InstructionJRC( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        if ( r->Flag.C ) {
+            r->PC += m->rom[r->PC + 1];
+        }
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "JR C, %#04x", addr + length + mem->rom[addr + 1] );
+    }
+};
+
+
+
+class InstructionAddHLSP : public Instruction
+{
+public:
+    InstructionAddHLSP( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        add_hl_r16( r, r->SP );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "ADD HL, SP" );
+    }
+};
+
+
+
+
+
+class InstructionLdAHLD : public Instruction
+{
+public:
+    InstructionLdAHLD( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->A = m->rom[r->HL--];
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "LD A, (HL-)" );
+    }
+};
+
+
+
+
+class InstructionDecSP : public Instruction
+{
+public:
+    InstructionDecSP( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->SP--;
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "DEC SP" );
+    }
+};
+
+
+
+class InstructionIncA : public Instruction
+{
+public:
+    InstructionIncA( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->A = increment( r, r->A );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "INC A" );
+    }
+};
+
+
+
+class InstructionDecA : public Instruction
+{
+public:
+    InstructionDecA( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->A = decrement( r, r->A );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "DEC A" );
+    }
+};
+
+
+
+class InstructionLdA : public Instruction
+{
+public:
+    InstructionLdA( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->A = m->rom[r->PC + 1];
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "LD A, %#02x", mem->rom[addr + 1] );
+    }
+};
+
+
+
+class InstructionCCF : public Instruction
+{
+public:
+    InstructionCCF( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->Flag.N = r->Flag.H = 0;
+        r->Flag.C ^= 1;
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "CCF" );
     }
 };

@@ -2,6 +2,7 @@
 #include "registers.h"
 #include "memory.h"
 #include "debugger.h"
+#include "instruction.h"
 
 uint8_t bootrom[] = {
       0x31,
@@ -335,6 +336,15 @@ public:
         opcode[0x35] = new InstructionDecHLderef();
         opcode[0x36] = new InstructionLdHLderef();
         opcode[0x37] = new InstructionSCF();
+        opcode[0x38] = new InstructionJRC();
+        opcode[0x39] = new InstructionAddHLSP();
+        opcode[0x3A] = new InstructionLdAHLD();
+        opcode[0x3B] = new InstructionDecSP();
+        opcode[0x3C] = new InstructionIncA();
+        opcode[0x3D] = new InstructionDecA();
+        opcode[0x3E] = new InstructionLdA();
+        opcode[0x3F] = new InstructionCCF();
+
 
 
 
