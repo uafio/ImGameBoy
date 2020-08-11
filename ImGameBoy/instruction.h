@@ -2897,3 +2897,124 @@ public:
         snprintf( dst, size, "ADC A, C" );
     }
 };
+
+class InstructionAdcAD : public Instruction
+{
+public:
+    InstructionAdcAD( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->A = adc( r, r->A, r->D );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "ADC A, D" );
+    }
+};
+
+class InstructionAdcAE : public Instruction
+{
+public:
+    InstructionAdcAE( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->A = adc( r, r->A, r->E );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "ADC A, E" );
+    }
+};
+
+
+class InstructionAdcAH : public Instruction
+{
+public:
+    InstructionAdcAH( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->A = adc( r, r->A, r->H );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "ADC A, H" );
+    }
+};
+
+class InstructionAdcAL : public Instruction
+{
+public:
+    InstructionAdcAL( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->A = adc( r, r->A, r->L );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "ADC A, L" );
+    }
+};
+
+class InstructionAdcAHL : public Instruction
+{
+public:
+    InstructionAdcAHL( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->A = adc( r, r->A, m->rom[r->HL] );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "ADC A, (HL)" );
+    }
+};
+
+class InstructionAdcAA : public Instruction
+{
+public:
+    InstructionAdcAA( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->A = adc( r, r->A, r->A );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "ADC A, A" );
+    }
+};
