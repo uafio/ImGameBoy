@@ -464,8 +464,39 @@ public:
         opcode[0xAE] = new InstructionXorAHL();
         opcode[0xAF] = new InstructionXorAA();
 
+        opcode[0xB0] = new InstructionOrAB();
+        opcode[0xB1] = new InstructionOrAC();
+        opcode[0xB2] = new InstructionOrAD();
+        opcode[0xB3] = new InstructionOrAE();
+        opcode[0xB4] = new InstructionOrAH();
+        opcode[0xB5] = new InstructionOrAL();
+        opcode[0xB6] = new InstructionOrAHL();
+        opcode[0xB7] = new InstructionOrAA();
+        opcode[0xB8] = new InstructionCpAB();
+        opcode[0xB9] = new InstructionCpAC();
+        opcode[0xBA] = new InstructionCpAD();
+        opcode[0xBB] = new InstructionCpAE();
+        opcode[0xBC] = new InstructionCpAH();
+        opcode[0xBD] = new InstructionCpAL();
+        opcode[0xBE] = new InstructionCpAHL();
+        opcode[0xBF] = new InstructionCpAA();
 
-
+        opcode[0xC0] = new InstructionRetNZ();
+        opcode[0xC1] = new InstructionPopBC();
+        opcode[0xC2] = new InstructionJpNZu16();
+        opcode[0xC3] = new InstructionJPu16();
+        opcode[0xC4] = new InstructionCallNZ();
+        opcode[0xC5] = new InstructionPushBC();
+        opcode[0xC6] = new InstructionAddA();
+        // TODO opcode[0xC7] = new InstructionRST00();
+        opcode[0xC8] = new InstructionRetZ();
+        opcode[0xC9] = new InstructionRet();
+        opcode[0xCA] = new InstructionJpZu16();
+        // TODO opcode[0xCB] = new InstructionPrefixCB();
+        opcode[0xCC] = new InstructionCallZu16();
+        opcode[0xCD] = new InstructionCallu16();
+        opcode[0xCE] = new InstructionAdcA();
+        opcode[0xCF] = new InstructionRST08();
 
 
 

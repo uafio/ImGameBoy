@@ -3,7 +3,6 @@
 #include "memory.h"
 #include "registers.h"
 
-
 class Instruction
 {
 private:
@@ -90,7 +89,7 @@ public:
         r->Flag.Z = result == 0;
         r->Flag.H = rs > ( 0xf - ( rd & 0xf ) );
         r->Flag.C = rs > ( 0xff - rd );
-        
+
         return result;
     }
 
@@ -130,7 +129,7 @@ public:
         return result;
     }
 
-    uint8_t _and( Registers * r, uint8_t rd, uint8_t rs )
+    uint8_t _and( Registers* r, uint8_t rd, uint8_t rs )
     {
         uint8_t result = rd & rs;
 
@@ -151,6 +150,28 @@ public:
         return result;
     }
 
+    uint8_t _or( Registers* r, uint8_t rd, uint8_t rs )
+    {
+        uint8_t result = rd | rs;
+
+        r->Flag.Z = result == 0;
+        r->Flag.N = r->Flag.H = r->Flag.C = 0;
+
+        return result;
+    }
+
+    void push( Memory* mem, Registers* r, uint16_t addr )
+    {
+        r->SP -= 2;
+        *(uint16_t*)&mem->rom[r->SP] = addr;
+    }
+
+    uint16_t pop( Memory* mem, Registers* r )
+    {
+        uint16_t result = *(uint16_t*)&mem->rom[r->SP];
+        r->SP += 2;
+        return result;
+    }
 };
 
 class InstructionNop : public Instruction
@@ -1263,7 +1284,6 @@ public:
     }
 };
 
-
 class InstructionJRC : public Instruction
 {
 public:
@@ -1286,8 +1306,6 @@ public:
     }
 };
 
-
-
 class InstructionAddHLSP : public Instruction
 {
 public:
@@ -1307,10 +1325,6 @@ public:
         snprintf( dst, size, "ADD HL, SP" );
     }
 };
-
-
-
-
 
 class InstructionLdAHLD : public Instruction
 {
@@ -1332,9 +1346,6 @@ public:
     }
 };
 
-
-
-
 class InstructionDecSP : public Instruction
 {
 public:
@@ -1354,8 +1365,6 @@ public:
         snprintf( dst, size, "DEC SP" );
     }
 };
-
-
 
 class InstructionIncA : public Instruction
 {
@@ -1377,8 +1386,6 @@ public:
     }
 };
 
-
-
 class InstructionDecA : public Instruction
 {
 public:
@@ -1399,8 +1406,6 @@ public:
     }
 };
 
-
-
 class InstructionLdA : public Instruction
 {
 public:
@@ -1420,8 +1425,6 @@ public:
         snprintf( dst, size, "LD A, %#02x", mem->rom[addr + 1] );
     }
 };
-
-
 
 class InstructionCCF : public Instruction
 {
@@ -1444,8 +1447,6 @@ public:
     }
 };
 
-
-
 class InstructionLdBB : public Instruction
 {
 public:
@@ -1464,7 +1465,6 @@ public:
         snprintf( dst, size, "LD B, B" );
     }
 };
-
 
 class InstructionLdBC : public Instruction
 {
@@ -1486,8 +1486,6 @@ public:
     }
 };
 
-
-
 class InstructionLdBD : public Instruction
 {
 public:
@@ -1508,8 +1506,6 @@ public:
     }
 };
 
-
-
 class InstructionLdBE : public Instruction
 {
 public:
@@ -1529,8 +1525,6 @@ public:
         snprintf( dst, size, "LD B, E" );
     }
 };
-
-
 
 class InstructionLdBH : public Instruction
 {
@@ -1572,8 +1566,6 @@ public:
     }
 };
 
-
-
 class InstructionLdBHL : public Instruction
 {
 public:
@@ -1593,8 +1585,6 @@ public:
         snprintf( dst, size, "LD B, (HL)" );
     }
 };
-
-
 
 class InstructionLdBA : public Instruction
 {
@@ -1616,8 +1606,6 @@ public:
     }
 };
 
-
-
 class InstructionLdCB : public Instruction
 {
 public:
@@ -1638,8 +1626,6 @@ public:
     }
 };
 
-
-
 class InstructionLdCC : public Instruction
 {
 public:
@@ -1658,8 +1644,6 @@ public:
         snprintf( dst, size, "LD C, C" );
     }
 };
-
-
 
 class InstructionLdCD : public Instruction
 {
@@ -1680,8 +1664,6 @@ public:
         snprintf( dst, size, "LD C, D" );
     }
 };
-
-
 
 class InstructionLdCE : public Instruction
 {
@@ -2379,7 +2361,6 @@ public:
     }
 };
 
-
 class InstructionLdLHL : public Instruction
 {
 public:
@@ -2721,8 +2702,6 @@ public:
     }
 };
 
-
-
 class InstructionLdAA : public Instruction
 {
 public:
@@ -2741,8 +2720,6 @@ public:
         snprintf( dst, size, "LD A, A" );
     }
 };
-
-
 
 class InstructionAddAB : public Instruction
 {
@@ -2983,7 +2960,6 @@ public:
         snprintf( dst, size, "ADC A, E" );
     }
 };
-
 
 class InstructionAdcAH : public Instruction
 {
@@ -3702,5 +3678,666 @@ public:
     virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
     {
         snprintf( dst, size, "XOR A, A" );
+    }
+};
+
+class InstructionOrAB : public Instruction
+{
+public:
+    InstructionOrAB( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->A = _or( r, r->A, r->B );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "OR A, B" );
+    }
+};
+
+class InstructionOrAC : public Instruction
+{
+public:
+    InstructionOrAC( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->A = _or( r, r->A, r->C );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "OR A, C" );
+    }
+};
+
+class InstructionOrAD : public Instruction
+{
+public:
+    InstructionOrAD( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->A = _or( r, r->A, r->D );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "OR A, D" );
+    }
+};
+
+class InstructionOrAE : public Instruction
+{
+public:
+    InstructionOrAE( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->A = _or( r, r->A, r->E );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "OR A, E" );
+    }
+};
+
+class InstructionOrAH : public Instruction
+{
+public:
+    InstructionOrAH( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->A = _or( r, r->A, r->H );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "OR A, H" );
+    }
+};
+
+class InstructionOrAL : public Instruction
+{
+public:
+    InstructionOrAL( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->A = _or( r, r->A, r->L );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "OR A, L" );
+    }
+};
+
+class InstructionOrAHL : public Instruction
+{
+public:
+    InstructionOrAHL( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->A = _or( r, r->A, m->rom[r->HL] );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "OR A, (HL)" );
+    }
+};
+
+class InstructionOrAA : public Instruction
+{
+public:
+    InstructionOrAA( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->A = _or( r, r->A, r->A );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "OR A, A" );
+    }
+};
+
+class InstructionCpAB : public Instruction
+{
+public:
+    InstructionCpAB( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        sub( r, r->A, r->B );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "CP A, B" );
+    }
+};
+
+class InstructionCpAC : public Instruction
+{
+public:
+    InstructionCpAC( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        sub( r, r->A, r->C );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "CP A, C" );
+    }
+};
+
+class InstructionCpAD : public Instruction
+{
+public:
+    InstructionCpAD( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        sub( r, r->A, r->D );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "CP A, D" );
+    }
+};
+
+class InstructionCpAE : public Instruction
+{
+public:
+    InstructionCpAE( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        sub( r, r->A, r->E );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "CP A, E" );
+    }
+};
+
+class InstructionCpAH : public Instruction
+{
+public:
+    InstructionCpAH( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        sub( r, r->A, r->H );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "CP A, H" );
+    }
+};
+
+class InstructionCpAL : public Instruction
+{
+public:
+    InstructionCpAL( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        sub( r, r->A, r->L );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "CP A, L" );
+    }
+};
+
+class InstructionCpAHL : public Instruction
+{
+public:
+    InstructionCpAHL( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        sub( r, r->A, m->rom[r->HL] );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "CP A, (HL)" );
+    }
+};
+
+class InstructionCpAA : public Instruction
+{
+public:
+    InstructionCpAA( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        sub( r, r->A, r->A );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "CP A, A" );
+    }
+};
+
+class InstructionRetNZ : public Instruction
+{
+public:
+    InstructionRetNZ( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        if ( !r->Flag.Z ) {
+            r->PC = pop( m, r );
+            r->SP += 2;
+            return;
+        }
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RET NZ" );
+    }
+};
+
+class InstructionPopBC : public Instruction
+{
+public:
+    InstructionPopBC( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->C = m->rom[r->SP++];
+        r->B = m->rom[r->SP++];
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "POP BC" );
+    }
+};
+
+class InstructionJpNZu16 : public Instruction
+{
+public:
+    InstructionJpNZu16( void )
+        : Instruction::Instruction( 3 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        if ( !r->Flag.Z ) {
+            r->PC = *(uint16_t*)&m->rom[r->PC + 1];
+            return;
+        }
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "JP NZ, %#04x", *(uint16_t*)&mem->rom[addr + 1] );
+    }
+};
+
+class InstructionJPu16 : public Instruction
+{
+public:
+    InstructionJPu16( void )
+        : Instruction::Instruction( 3 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->PC = *(uint16_t*)&m->rom[r->PC + 1];
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "JP %#04x", *(uint16_t*)&mem->rom[addr + 1] );
+    }
+};
+
+class InstructionCallNZ : public Instruction
+{
+public:
+    InstructionCallNZ( void )
+        : Instruction::Instruction( 3 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        if ( !r->Flag.Z ) {
+            push( m, r, r->PC + length );
+            r->PC = *(uint16_t*)&m->rom[r->PC + 1];
+            return;
+        }
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "CALL NZ, %#04x", *(uint16_t*)&mem->rom[addr + 1] );
+    }
+};
+
+class InstructionPushBC : public Instruction
+{
+public:
+    InstructionPushBC( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        push( m, r, r->BC );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "PUSH BC" );
+    }
+};
+
+class InstructionAddA : public Instruction
+{
+public:
+    InstructionAddA( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->A = add( r, r->A, m->rom[r->PC + 1] );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "ADD A, %#02x", mem->rom[addr + 1] );
+    }
+};
+
+class InstructionRST00 : public Instruction
+{
+public:
+    InstructionRST00( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        // TODO
+        r->PC = pop( m, r );
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RST 0x00" );
+    }
+};
+
+class InstructionRetZ : public Instruction
+{
+public:
+    InstructionRetZ( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        if ( r->Flag.Z ) {
+            r->PC = pop( m, r );
+            return;
+        }
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RET Z" );
+    }
+};
+
+class InstructionRet : public Instruction
+{
+public:
+    InstructionRet( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->PC = pop( m, r );
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RET" );
+    }
+};
+
+class InstructionJpZu16 : public Instruction
+{
+public:
+    InstructionJpZu16( void )
+        : Instruction::Instruction( 3 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        if ( r->Flag.Z ) {
+            r->PC = *(uint16_t*)&m->rom[r->PC + 1];
+            return;
+        }
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "JP Z, %#04x", *(uint16_t*)&mem->rom[addr + 1] );
+    }
+};
+
+class InstructionPrefixCB : public Instruction
+{
+public:
+    InstructionPrefixCB( void )
+        : Instruction::Instruction( 1 )
+    {
+        // TODO
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        // TODO
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        // TODO
+        snprintf( dst, size, "" );
+    }
+};
+
+class InstructionCallZu16 : public Instruction
+{
+public:
+    InstructionCallZu16( void )
+        : Instruction::Instruction( 3 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        if ( r->Flag.Z ) {
+            push( m, r, r->PC + length );
+            r->PC = *(uint16_t*)&m->rom[r->PC + 1];
+            return;
+        }
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "CALL Z, %#04x", *(uint16_t*)&mem->rom[addr + 1] );
+    }
+};
+
+class InstructionCallu16 : public Instruction
+{
+public:
+    InstructionCallu16( void )
+        : Instruction::Instruction( 3 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->PC = *(uint16_t*)&m->rom[r->PC + 1];
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "CALL %#04x", *(uint16_t*)&mem->rom[addr + 1] );
+    }
+};
+
+class InstructionAdcA : public Instruction
+{
+public:
+    InstructionAdcA( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->A = adc( r, r->A, m->rom[r->PC + 1] );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "ADC A, %#02x", mem->rom[addr + 1] );
+    }
+};
+
+class InstructionRST08 : public Instruction
+{
+public:
+    InstructionRST08( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        // TODO
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RST 0x08" );
     }
 };
