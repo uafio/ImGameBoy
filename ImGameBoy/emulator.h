@@ -430,6 +430,24 @@ public:
         opcode[0x8E] = new InstructionAdcAHL();
         opcode[0x8F] = new InstructionAdcAA();
 
+        opcode[0x90] = new InstructionSubAB();
+        opcode[0x91] = new InstructionSubAC();
+        opcode[0x92] = new InstructionSubAD();
+        opcode[0x93] = new InstructionSubAE();
+        opcode[0x94] = new InstructionSubAH();
+        opcode[0x95] = new InstructionSubAL();
+        opcode[0x96] = new InstructionSubAHL();
+        opcode[0x97] = new InstructionSubAA();
+        opcode[0x98] = new InstructionSbcAB();
+        opcode[0x99] = new InstructionSbcAC();
+        opcode[0x9A] = new InstructionSbcAD();
+        opcode[0x9B] = new InstructionSbcAE();
+        opcode[0x9C] = new InstructionSbcAH();
+        opcode[0x9D] = new InstructionSbcAL();
+        opcode[0x9E] = new InstructionSbcAHL();
+        opcode[0x9F] = new InstructionSbcAA();
+
+
 
 
 
