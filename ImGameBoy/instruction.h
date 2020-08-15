@@ -4259,10 +4259,10 @@ public:
     }
 };
 
-class InstructionCallZu16 : public Instruction
+class InstructionCallZ : public Instruction
 {
 public:
-    InstructionCallZu16( void )
+    InstructionCallZ( void )
         : Instruction::Instruction( 3 )
     {
     }
@@ -4283,17 +4283,19 @@ public:
     }
 };
 
-class InstructionCallu16 : public Instruction
+class InstructionCall : public Instruction
 {
 public:
-    InstructionCallu16( void )
+    InstructionCall( void )
         : Instruction::Instruction( 3 )
     {
     }
 
     virtual void execute( Memory* m, Registers* r )
     {
-        r->PC = *(uint16_t*)&m->rom[r->PC + 1];
+        uint16_t addr = *(uint16_t*)&m->rom[r->PC + 1];
+        push( m, r, addr);
+        r->PC = addr;
     }
 
     virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
@@ -4339,5 +4341,286 @@ public:
     virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
     {
         snprintf( dst, size, "RST 0x08" );
+    }
+};
+
+class InstructionRetNC : public Instruction
+{
+public:
+    InstructionRetNC( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        if ( !r->Flag.C ) {
+            r->PC = pop( m, r );
+            return;
+        }
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RET NC" );
+    }
+};
+
+class InstructionPopDE : public Instruction
+{
+public:
+    InstructionPopDE( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->DE = pop( m, r );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "POP DE" );
+    }
+};
+
+class InstructionJpNCu16 : public Instruction
+{
+public:
+    InstructionJpNCu16( void )
+        : Instruction::Instruction( 3 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        if ( !r->Flag.C ) {
+            r->PC = *(uint16_t*)&m->rom[r->PC + 1];
+            return;
+        }
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "JP NC, %#04x", *(uint16_t*)&mem->rom[addr + 1] );
+    }
+};
+
+class InstructionCallNC : public Instruction
+{
+public:
+    InstructionCallNC( void )
+        : Instruction::Instruction( 3 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        if ( !r->Flag.C ) {
+            push( m, r, r->PC + length );
+            r->PC = *(uint16_t*)&m->rom[r->PC + 1];
+            return;
+        }
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "CALL NC, %#04x", *(uint16_t*)&mem->rom[addr + 1] );
+    }
+};
+
+class InstructionPushDE : public Instruction
+{
+public:
+    InstructionPushDE( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        push( m, r, r->DE );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "PUSH DE" );
+    }
+};
+
+class InstructionSubAu8 : public Instruction
+{
+public:
+    InstructionSubAu8( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->A = sub( r, r->A, m->rom[r->PC + 1] );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "SUB A, %#02x", mem->rom[addr + 1] );
+    }
+};
+
+class InstructionRST10 : public Instruction
+{
+public:
+    InstructionRST10( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        // TODO
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RST 0x10" );
+    }
+};
+
+class InstructionRetC : public Instruction
+{
+public:
+    InstructionRetC( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        if ( r->Flag.C ) {
+            r->PC = pop( m, r );
+            return;
+        }
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RET C" );
+    }
+};
+
+class InstructionRetI : public Instruction
+{
+public:
+    InstructionRetI( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->PC = pop( m, r );
+        m->ie = 1;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RETI" );
+    }
+};
+
+class InstructionJpCu16 : public Instruction
+{
+public:
+    InstructionJpCu16( void )
+        : Instruction::Instruction( 3 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        if ( r->Flag.C ) {
+            r->PC = *(uint16_t*)&m->rom[r->PC + 1];
+            return;
+        }
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "JP C, %#04x", *(uint16_t*)&mem->rom[addr + 1] );
+    }
+};
+
+class InstructionCallC : public Instruction
+{
+public:
+    InstructionCallC( void )
+        : Instruction::Instruction( 3 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        if ( r->Flag.C ) {
+            uint16_t addr = *(uint16_t*)&m->rom[r->PC + 1];
+            push( m, r, addr );
+            r->PC = addr;
+            return;
+        }
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "CALL C, %#04x", *(uint16_t*)&mem->rom[addr + 1] );
+    }
+};
+
+class InstructionSbcA : public Instruction
+{
+public:
+    InstructionSbcA( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->A = sbc( r, r->A, m->rom[r->PC + 1] );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "SBC A, %#02x", mem->rom[addr + 1] );
+    }
+};
+
+class InstructionRST18 : public Instruction
+{
+public:
+    InstructionRST18( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        // TODO
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RST 0x18" );
     }
 };
