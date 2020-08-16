@@ -526,6 +526,21 @@ public:
         opcode[0xEE] = new InstructionXorA();
         opcode[0xEF] = new InstructionRST28();
 
+        opcode[0xF0] = new InstructionLdAFF();
+        opcode[0xF1] = new InstructionPopAF();
+        opcode[0xF2] = new InstructionLdAFFC();
+        opcode[0xF3] = new InstructionDI();
+        opcode[0xF4] = new InstructionPushAF();
+        opcode[0xF6] = new InstructionOrA();
+        opcode[0xF7] = new InstructionRST30();
+        opcode[0xF8] = new InstructionLdHLSPi8();
+        opcode[0xF9] = new InstructionLdSPHL();
+        opcode[0xFA] = new InstructionLdAu16();
+        opcode[0xFB] = new InstructionEI();
+        opcode[0xFE] = new InstructionCpA();
+        opcode[0xFF] = new InstructionRST38();
+
+
 
 
         for ( int i = 0; i < _countof( opcode ); i++ )
