@@ -959,6 +959,28 @@ public:
     }
 };
 
+
+class InstructionDAA : public Instruction
+{
+public:
+    InstructionDAA( void )
+        : Instruction::Instruction( 1 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        // TODO
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "DAA" );
+    }
+};
+
+
 class InstructionJRZ : public Instruction
 {
 public:
@@ -4163,8 +4185,8 @@ public:
 
     virtual void execute( Memory* m, Registers* r )
     {
-        // TODO
-        r->PC = pop( m, r );
+        push( m, r, r->PC + length );
+        r->PC = 0x00;
     }
 
     virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
@@ -4485,8 +4507,8 @@ public:
 
     virtual void execute( Memory* m, Registers* r )
     {
-        // TODO
-        r->PC += length;
+        push( m, r, r->PC + length );
+        r->PC = 0x10;
     }
 
     virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
@@ -4616,8 +4638,8 @@ public:
 
     virtual void execute( Memory* m, Registers* r )
     {
-        // TODO
-        r->PC += length;
+        push( m, r, r->PC + length );
+        r->PC = 0x18;
     }
 
     virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
@@ -4736,8 +4758,8 @@ public:
 
     virtual void execute( Memory* m, Registers* r )
     {
-        // TODO
-        r->PC += length;
+        push( m, r, r->PC + length );
+        r->PC = 0x20;
     }
 
     virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )

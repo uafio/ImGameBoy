@@ -317,7 +317,7 @@ public:
         opcode[0x24] = new InstructionIncH();
         opcode[0x25] = new InstructionDecH();
         opcode[0x26] = new InstructionLdH();
-        // TODO opcode[0x27] = new InstructionDAA();
+        //TODO opcode[0x27] = new InstructionDAA();
         opcode[0x28] = new InstructionJRZ();
         opcode[0x29] = new InstructionAddHLHL();
         opcode[0x2A] = new InstructionLdAHLI();
@@ -487,11 +487,11 @@ public:
         opcode[0xC4] = new InstructionCallNZ();
         opcode[0xC5] = new InstructionPushBC();
         opcode[0xC6] = new InstructionAddA();
-        // TODO opcode[0xC7] = new InstructionRST00();
+        opcode[0xC7] = new InstructionRST00();
         opcode[0xC8] = new InstructionRetZ();
         opcode[0xC9] = new InstructionRet();
         opcode[0xCA] = new InstructionJpZu16();
-        // TODO opcode[0xCB] = new InstructionPrefixCB();
+        // opcode[0xCB] = new InstructionPrefixCB();
         opcode[0xCC] = new InstructionCallZ();
         opcode[0xCD] = new InstructionCall();
         opcode[0xCE] = new InstructionAdcA();
@@ -504,7 +504,7 @@ public:
         opcode[0xD4] = new InstructionCallNC();
         opcode[0xD5] = new InstructionPushDE();
         opcode[0xD6] = new InstructionSubAu8();
-        // TODO opcode[0xD7] = new InstructionRST10();
+        opcode[0xD7] = new InstructionRST10();
         opcode[0xD8] = new InstructionRetC();
         opcode[0xD9] = new InstructionRetI();
         opcode[0xDA] = new InstructionJpCu16();
@@ -512,14 +512,14 @@ public:
         opcode[0xDC] = new InstructionCallC();
         opcode[0xDD] = new Instruction();
         opcode[0xDE] = new InstructionSbcA();
-        // opcode[0xDF] = new InstructionRST18();
+        opcode[0xDF] = new InstructionRST18();
 
         opcode[0xE0] = new InstructionLdFFA();
         opcode[0xE1] = new InstructionPopHL();
         opcode[0xE2] = new InstructionLdFFCA();
         opcode[0xE5] = new InstructionPushHL();
         opcode[0xE6] = new InstructionAddAu8();
-        // opcode[0xE7] = new InstructionRST20();
+        opcode[0xE7] = new InstructionRST20();
         opcode[0xE8] = new InstructionAddSPi8();
         opcode[0xE9] = new InstructionJpHL();
         opcode[0xEA] = new InstructionLdu16A();
