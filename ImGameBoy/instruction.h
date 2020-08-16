@@ -5180,6 +5180,28 @@ public:
 
         return result;
     }
+
+    static uint8_t sla( Registers* r, uint8_t operand )
+    {
+        uint8_t result = operand << 1;
+
+        r->Flag.Z = result == 0;
+        r->Flag.N = r->Flag.H = 0;
+        r->Flag.C = operand >> 7;
+
+        return result;
+    }
+
+    static uint8_t sra( Registers* r, uint8_t operand )
+    {
+        uint8_t result = operand >> 1;
+
+        r->Flag.Z = result == 0;
+        r->Flag.N = r->Flag.H = 0;
+        r->Flag.C = operand & 1;
+
+        return ( result | (operand & 0x80 ) );
+    }
 };
 
 class InstructionExRLCB : public Instruction
@@ -5836,6 +5858,326 @@ public:
     }
 };
 
+class InstructionExSLAB : public Instruction
+{
+public:
+    InstructionExSLAB( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->B = InstructionEx::sla( r, r->B );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "SLA B" );
+    }
+};
+
+class InstructionExSLAC : public Instruction
+{
+public:
+    InstructionExSLAC( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->C = InstructionEx::sla( r, r->C );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "SLA C" );
+    }
+};
+
+class InstructionExSLAD : public Instruction
+{
+public:
+    InstructionExSLAD( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->D = InstructionEx::sla( r, r->D );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "SLA D" );
+    }
+};
+
+class InstructionExSLAE : public Instruction
+{
+public:
+    InstructionExSLAE( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->E = InstructionEx::sla( r, r->E );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "SLA E" );
+    }
+};
+
+class InstructionExSLAH : public Instruction
+{
+public:
+    InstructionExSLAH( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->H = InstructionEx::sla( r, r->H );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "SLA H" );
+    }
+};
+
+class InstructionExSLAL : public Instruction
+{
+public:
+    InstructionExSLAL( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->L = InstructionEx::sla( r, r->L );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "SLA L" );
+    }
+};
+
+class InstructionExSLAHL : public Instruction
+{
+public:
+    InstructionExSLAHL( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        m->rom[r->HL] = InstructionEx::sla( r, m->rom[r->HL] );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "SLA (HL)" );
+    }
+};
+
+class InstructionExSLAA : public Instruction
+{
+public:
+    InstructionExSLAA( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->A = InstructionEx::sla( r, r->A );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "SLA A" );
+    }
+};
+
+class InstructionExSRAB : public Instruction
+{
+public:
+    InstructionExSRAB( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->B = InstructionEx::sra( r, r->B );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "SRA B" );
+    }
+};
+
+class InstructionExSRAC : public Instruction
+{
+public:
+    InstructionExSRAC( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->C = InstructionEx::sra( r, r->C );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "SRA C" );
+    }
+};
+
+class InstructionExSRAD : public Instruction
+{
+public:
+    InstructionExSRAD( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->D = InstructionEx::sra( r, r->D );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "SRA D" );
+    }
+};
+
+class InstructionExSRAE : public Instruction
+{
+public:
+    InstructionExSRAE( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->E = InstructionEx::sra( r, r->E );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "SRA E" );
+    }
+};
+
+class InstructionExSRAH : public Instruction
+{
+public:
+    InstructionExSRAH( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->H = InstructionEx::sra( r, r->H );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "SRA H" );
+    }
+};
+
+class InstructionExSRAL : public Instruction
+{
+public:
+    InstructionExSRAL( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->L = InstructionEx::sra( r, r->L );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "SRA L" );
+    }
+};
+
+class InstructionExSRAHL : public Instruction
+{
+public:
+    InstructionExSRAHL( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        m->rom[r->HL] = InstructionEx::sra( r, m->rom[r->HL] );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "SRA (HL)" );
+    }
+};
+
+class InstructionExSRAA : public Instruction
+{
+public:
+    InstructionExSRAA( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->A = InstructionEx::sra( r, r->A );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "SRA A" );
+    }
+};
+
 
 InstructionEx::InstructionEx( void )
     : Instruction::Instruction( 2 )
@@ -5876,6 +6218,22 @@ InstructionEx::InstructionEx( void )
     opcode[0x1E] = new InstructionExRRHL();
     opcode[0x1F] = new InstructionExRRA();
 
+    opcode[0x20] = new InstructionExSLAB();
+    opcode[0x21] = new InstructionExSLAC();
+    opcode[0x22] = new InstructionExSLAD();
+    opcode[0x23] = new InstructionExSLAE();
+    opcode[0x24] = new InstructionExSLAH();
+    opcode[0x25] = new InstructionExSLAL();
+    opcode[0x26] = new InstructionExSLAHL();
+    opcode[0x27] = new InstructionExSLAA();
+    opcode[0x28] = new InstructionExSRAB();
+    opcode[0x29] = new InstructionExSRAC();
+    opcode[0x2A] = new InstructionExSRAD();
+    opcode[0x2B] = new InstructionExSRAE();
+    opcode[0x2C] = new InstructionExSRAH();
+    opcode[0x2D] = new InstructionExSRAL();
+    opcode[0x2E] = new InstructionExSRAHL();
+    opcode[0x2F] = new InstructionExSRAA();
 
 
 
