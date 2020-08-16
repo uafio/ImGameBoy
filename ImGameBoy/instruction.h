@@ -45,7 +45,7 @@ public:
         return --operand;
     }
 
-    uint8_t rlc( Registers* r, uint8_t operand )
+    uint8_t rlca( Registers* r, uint8_t operand )
     {
         r->Flag.Z = r->Flag.N = r->Flag.H = 0;
         r->Flag.C = operand >> 7;
@@ -59,7 +59,7 @@ public:
         return operand << 1;
     }
 
-    uint8_t rrc( Registers* r, uint8_t operand )
+    uint8_t rrca( Registers* r, uint8_t operand )
     {
         r->Flag.Z = r->Flag.N = r->Flag.H = 0;
         r->Flag.C = operand & 1;
@@ -324,7 +324,7 @@ public:
 
     virtual void execute( Memory* m, Registers* r )
     {
-        r->A = rlc( r, r->A );
+        r->A = rlca( r, r->A );
         r->PC += length;
     }
 
@@ -485,7 +485,7 @@ public:
 
     virtual void execute( Memory* m, Registers* r )
     {
-        r->A = rrc( r, r->A );
+        r->A = rrca( r, r->A );
         r->PC += length;
     }
 
@@ -4260,27 +4260,6 @@ public:
     }
 };
 
-class InstructionPrefixCB : public Instruction
-{
-public:
-    InstructionPrefixCB( void )
-        : Instruction::Instruction( 1 )
-    {
-        // TODO
-    }
-
-    virtual void execute( Memory* m, Registers* r )
-    {
-        // TODO
-        r->PC += length;
-    }
-
-    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
-    {
-        // TODO
-        snprintf( dst, size, "" );
-    }
-};
 
 class InstructionCallZ : public Instruction
 {
@@ -5129,3 +5108,426 @@ public:
         snprintf( dst, size, "RST 0x38" );
     }
 };
+
+
+/* ===================================================================
+
+                  Extended Instructions (0xCB)
+
+   ================================================================ */ 
+
+
+
+class InstructionEx : public Instruction
+{
+private:
+    Instruction* opcode[0x100];
+
+public:
+    InstructionEx( void );
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        opcode[m->rom[r->PC + 1]]->execute( m, r );
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        opcode[mem->rom[addr + 1]]->dis( dst, size, mem, addr );        
+    }
+
+    static uint8_t rlc( Registers* r, uint8_t operand )
+    {
+        r->Flag.N = r->Flag.H = 0;
+        r->Flag.C = operand >> 7;
+
+        uint8_t result = ( operand << 1 ) | r->Flag.C;
+
+        r->Flag.Z = result == 0;
+
+        return result;
+    }
+
+    static uint8_t rrc( Registers* r, uint8_t operand )
+    {
+        r->Flag.N = r->Flag.H = 0;
+        r->Flag.C = operand & 1;
+
+        uint8_t result = ( r->Flag.C << 7 ) | ( operand >> 1 );
+        r->Flag.Z = result == 0;
+
+        return result;
+    }
+};
+
+class InstructionExRLCB : public Instruction
+{
+public:
+    InstructionExRLCB( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->B = InstructionEx::rlc( r, r->B );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RLC B" );
+    }
+};
+
+class InstructionExRLCC : public Instruction
+{
+public:
+    InstructionExRLCC( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->C = InstructionEx::rlc( r, r->C );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RLC C" );
+    }
+};
+
+
+
+class InstructionExRLCD : public Instruction
+{
+public:
+    InstructionExRLCD( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->D = InstructionEx::rlc( r, r->D );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RLC D" );
+    }
+};
+
+
+
+class InstructionExRLCE : public Instruction
+{
+public:
+    InstructionExRLCE( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->E = InstructionEx::rlc( r, r->E );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RLC E" );
+    }
+};
+
+
+class InstructionExRLCH : public Instruction
+{
+public:
+    InstructionExRLCH( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->H = InstructionEx::rlc( r, r->H );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RLC H" );
+    }
+};
+
+
+
+class InstructionExRLCL : public Instruction
+{
+public:
+    InstructionExRLCL( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->L = InstructionEx::rlc( r, r->L );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RLC H" );
+    }
+};
+
+
+class InstructionExRLCHL : public Instruction
+{
+public:
+    InstructionExRLCHL( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        m->rom[r->HL] = InstructionEx::rlc( r, m->rom[r->HL] );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RLC (HL)" );
+    }
+};
+
+
+
+class InstructionExRLCA : public Instruction
+{
+public:
+    InstructionExRLCA( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->A = InstructionEx::rlc( r, r->A );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RLC A" );
+    }
+};
+
+
+class InstructionExRRCB : public Instruction
+{
+public:
+    InstructionExRRCB( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->B = InstructionEx::rrc( r, r->B );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RRC B" );
+    }
+};
+
+
+class InstructionExRRCC : public Instruction
+{
+public:
+    InstructionExRRCC( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->C = InstructionEx::rrc( r, r->C );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RRC C" );
+    }
+};
+
+class InstructionExRRCD : public Instruction
+{
+public:
+    InstructionExRRCD( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->D = InstructionEx::rrc( r, r->D );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RRC D" );
+    }
+};
+
+class InstructionExRRCE : public Instruction
+{
+public:
+    InstructionExRRCE( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->E = InstructionEx::rrc( r, r->E );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RRC E" );
+    }
+};
+
+class InstructionExRRCH : public Instruction
+{
+public:
+    InstructionExRRCH( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->H = InstructionEx::rrc( r, r->H );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RRC H" );
+    }
+};
+
+
+class InstructionExRRCL : public Instruction
+{
+public:
+    InstructionExRRCL( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->L = InstructionEx::rrc( r, r->L );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RRC L" );
+    }
+};
+
+
+class InstructionExRRCHL : public Instruction
+{
+public:
+    InstructionExRRCHL( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        m->rom[r->HL] = InstructionEx::rrc( r, m->rom[r->HL] );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RRC (HL)" );
+    }
+};
+
+class InstructionExRRCA : public Instruction
+{
+public:
+    InstructionExRRCA( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        r->A = InstructionEx::rrc( r, r->A );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RRC A" );
+    }
+};
+
+
+InstructionEx::InstructionEx( void )
+    : Instruction::Instruction( 0 )
+{
+    memset( opcode, 0, sizeof( opcode ) );
+
+    opcode[0x00] = new InstructionExRLCB();
+    opcode[0x01] = new InstructionExRLCC();
+    opcode[0x02] = new InstructionExRLCD();
+    opcode[0x03] = new InstructionExRLCE();
+    opcode[0x04] = new InstructionExRLCH();
+    opcode[0x05] = new InstructionExRLCL();
+    opcode[0x06] = new InstructionExRLCHL();
+    opcode[0x07] = new InstructionExRLCA();
+    opcode[0x08] = new InstructionExRRCB();
+    opcode[0x09] = new InstructionExRRCC();
+    opcode[0x0A] = new InstructionExRRCD();
+    opcode[0x0B] = new InstructionExRRCE();
+    opcode[0x0C] = new InstructionExRRCH();
+    opcode[0x0D] = new InstructionExRRCL();
+    opcode[0x0E] = new InstructionExRLCHL();
+    opcode[0x0F] = new InstructionExRRCA();
+
+
+
+
+
+
+
+
+
+    for ( int i = 0; i < _countof( opcode ); i++ ) {
+        if ( opcode[i] == nullptr ) {
+            opcode[i] = new Instruction();
+        }
+    }
+}

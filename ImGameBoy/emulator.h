@@ -491,7 +491,7 @@ public:
         opcode[0xC8] = new InstructionRetZ();
         opcode[0xC9] = new InstructionRet();
         opcode[0xCA] = new InstructionJpZu16();
-        // opcode[0xCB] = new InstructionPrefixCB();
+        opcode[0xCB] = new InstructionEx();
         opcode[0xCC] = new InstructionCallZ();
         opcode[0xCD] = new InstructionCall();
         opcode[0xCE] = new InstructionAdcA();
