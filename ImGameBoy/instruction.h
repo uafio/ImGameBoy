@@ -6850,6 +6850,326 @@ public:
     }
 };
 
+class InstructionExBit2B : public Instruction
+{
+public:
+    InstructionExBit2B( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::bit( r, r->B, 2 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "BIT 2, B" );
+    }
+};
+
+class InstructionExBit2C : public Instruction
+{
+public:
+    InstructionExBit2C( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::bit( r, r->C, 2 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "BIT 2, C" );
+    }
+};
+
+class InstructionExBit2D : public Instruction
+{
+public:
+    InstructionExBit2D( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::bit( r, r->D, 2 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "BIT 2, D" );
+    }
+};
+
+class InstructionExBit2E : public Instruction
+{
+public:
+    InstructionExBit2E( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::bit( r, r->E, 2 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "BIT 2, E" );
+    }
+};
+
+class InstructionExBit2H : public Instruction
+{
+public:
+    InstructionExBit2H( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::bit( r, r->H, 2 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "BIT 2, H" );
+    }
+};
+
+class InstructionExBit2L : public Instruction
+{
+public:
+    InstructionExBit2L( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::bit( r, r->L, 2 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "BIT 2, L" );
+    }
+};
+
+class InstructionExBit2HL : public Instruction
+{
+public:
+    InstructionExBit2HL( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::bit( r, m->rom[r->HL], 2 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "BIT 2, (HL)" );
+    }
+};
+
+class InstructionExBit2A : public Instruction
+{
+public:
+    InstructionExBit2A( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::bit( r, r->A, 2 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "BIT 2, A" );
+    }
+};
+
+class InstructionExBit3B : public Instruction
+{
+public:
+    InstructionExBit3B( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::bit( r, r->B, 3 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "BIT 3, B" );
+    }
+};
+
+class InstructionExBit3C : public Instruction
+{
+public:
+    InstructionExBit3C( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::bit( r, r->C, 3 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "BIT 3, C" );
+    }
+};
+
+class InstructionExBit3D : public Instruction
+{
+public:
+    InstructionExBit3D( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::bit( r, r->D, 3 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "BIT 3, D" );
+    }
+};
+
+class InstructionExBit3E : public Instruction
+{
+public:
+    InstructionExBit3E( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::bit( r, r->E, 3 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "BIT 3, E" );
+    }
+};
+
+class InstructionExBit3H : public Instruction
+{
+public:
+    InstructionExBit3H( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::bit( r, r->H, 3 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "BIT 3, H" );
+    }
+};
+
+class InstructionExBit3L : public Instruction
+{
+public:
+    InstructionExBit3L( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::bit( r, r->L, 3 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "BIT 3, L" );
+    }
+};
+
+class InstructionExBit3HL : public Instruction
+{
+public:
+    InstructionExBit3HL( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::bit( r, m->rom[r->HL], 3 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "BIT 3, (HL)" );
+    }
+};
+
+class InstructionExBit3A : public Instruction
+{
+public:
+    InstructionExBit3A( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::bit( r, r->A, 3 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "BIT 3, A" );
+    }
+};
+
 
 InstructionEx::InstructionEx( void )
     : Instruction::Instruction( 2 )
@@ -6940,6 +7260,23 @@ InstructionEx::InstructionEx( void )
     opcode[0x4D] = new InstructionExBit1L();
     opcode[0x4E] = new InstructionExBit1HL();
     opcode[0x4F] = new InstructionExBit1A();
+
+    opcode[0x50] = new InstructionExBit2B();
+    opcode[0x51] = new InstructionExBit2C();
+    opcode[0x52] = new InstructionExBit2D();
+    opcode[0x53] = new InstructionExBit2E();
+    opcode[0x54] = new InstructionExBit2H();
+    opcode[0x55] = new InstructionExBit2L();
+    opcode[0x56] = new InstructionExBit2HL();
+    opcode[0x57] = new InstructionExBit2A();
+    opcode[0x58] = new InstructionExBit3B();
+    opcode[0x59] = new InstructionExBit3C();
+    opcode[0x5A] = new InstructionExBit3D();
+    opcode[0x5B] = new InstructionExBit3E();
+    opcode[0x5C] = new InstructionExBit3H();
+    opcode[0x5D] = new InstructionExBit3L();
+    opcode[0x5E] = new InstructionExBit3HL();
+    opcode[0x5F] = new InstructionExBit3A();
 
 
 
