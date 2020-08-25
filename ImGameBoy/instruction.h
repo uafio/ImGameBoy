@@ -9421,6 +9421,326 @@ public:
     }
 };
 
+class InstructionExSet2B : public Instruction
+{
+public:
+    InstructionExSet2B( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::set( r->B, 2 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "SET 2, B" );
+    }
+};
+
+class InstructionExSet2C : public Instruction
+{
+public:
+    InstructionExSet2C( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::set( r->C, 2 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "SET 2, C" );
+    }
+};
+
+class InstructionExSet2D : public Instruction
+{
+public:
+    InstructionExSet2D( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::set( r->D, 2 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "SET 2, D" );
+    }
+};
+
+class InstructionExSet2E : public Instruction
+{
+public:
+    InstructionExSet2E( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::set( r->E, 2 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "SET 2, E" );
+    }
+};
+
+class InstructionExSet2H : public Instruction
+{
+public:
+    InstructionExSet2H( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::set( r->H, 2 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "SET 2, H" );
+    }
+};
+
+class InstructionExSet2L : public Instruction
+{
+public:
+    InstructionExSet2L( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::set( r->L, 2 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "SET 2, L" );
+    }
+};
+
+class InstructionExSet2HL : public Instruction
+{
+public:
+    InstructionExSet2HL( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::set( m->rom[r->HL], 2 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "SET 2, (HL)" );
+    }
+};
+
+class InstructionExSet2A : public Instruction
+{
+public:
+    InstructionExSet2A( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::set( r->A, 2 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "SET 2, A" );
+    }
+};
+
+class InstructionExSet3B : public Instruction
+{
+public:
+    InstructionExSet3B( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::set( r->B, 3 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "SET 3, B" );
+    }
+};
+
+class InstructionExSet3C : public Instruction
+{
+public:
+    InstructionExSet3C( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::set( r->C, 3 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "SET 3, C" );
+    }
+};
+
+class InstructionExSet3D : public Instruction
+{
+public:
+    InstructionExSet3D( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::set( r->D, 3 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "SET 3, D" );
+    }
+};
+
+class InstructionExSet3E : public Instruction
+{
+public:
+    InstructionExSet3E( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::set( r->E, 3 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "SET 3, E" );
+    }
+};
+
+class InstructionExSet3H : public Instruction
+{
+public:
+    InstructionExSet3H( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::set( r->H, 3 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "SET 3, H" );
+    }
+};
+
+class InstructionExSet3L : public Instruction
+{
+public:
+    InstructionExSet3L( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::set( r->L, 3 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "SET 3, L" );
+    }
+};
+
+class InstructionExSet3HL : public Instruction
+{
+public:
+    InstructionExSet3HL( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::set( m->rom[r->HL], 3 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "SET 3, (HL)" );
+    }
+};
+
+class InstructionExSet3A : public Instruction
+{
+public:
+    InstructionExSet3A( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::set( r->A, 3 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "SET 3, A" );
+    }
+};
+
 
 
 
@@ -9652,6 +9972,24 @@ InstructionEx::InstructionEx( void )
     opcode[0xCD] = new InstructionExSet1L();
     opcode[0xCE] = new InstructionExSet1HL();
     opcode[0xCF] = new InstructionExSet1A();
+
+    opcode[0xD0] = new InstructionExSet2B();
+    opcode[0xD1] = new InstructionExSet2C();
+    opcode[0xD2] = new InstructionExSet2D();
+    opcode[0xD3] = new InstructionExSet2E();
+    opcode[0xD4] = new InstructionExSet2H();
+    opcode[0xD5] = new InstructionExSet2L();
+    opcode[0xD6] = new InstructionExSet2HL();
+    opcode[0xD7] = new InstructionExSet2A();
+    opcode[0xD8] = new InstructionExSet3B();
+    opcode[0xD9] = new InstructionExSet3C();
+    opcode[0xDA] = new InstructionExSet3D();
+    opcode[0xDB] = new InstructionExSet3E();
+    opcode[0xDC] = new InstructionExSet3H();
+    opcode[0xDD] = new InstructionExSet3L();
+    opcode[0xDE] = new InstructionExSet3HL();
+    opcode[0xDF] = new InstructionExSet3A();
+
 
 
 
