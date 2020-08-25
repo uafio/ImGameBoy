@@ -98,5 +98,8 @@
     <ClInclude Include="instruction.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="shared.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include "memory.h"
 #include "registers.h"
+#include "shared.h"
 
 class Instruction
 {
@@ -81,7 +82,7 @@ public:
         r->HL += r16;
     }
 
-    template< class T>
+    template< class T >
     T add( Registers* r, T rd, T rs )
     {
         T result = rd + rs;
@@ -497,16 +498,19 @@ public:
 
 class InstructionStop : public Instruction
 {
+private:
+    StepState& sstate;
+
 public:
-    InstructionStop( void )
-        : Instruction::Instruction( 2 )
+    InstructionStop( StepState& state )
+        : Instruction::Instruction( 2 ), sstate( state )
     {
     }
 
     virtual void execute( Memory* m, Registers* r )
     {
         if ( m->rom[r->PC + 1] == 0 ) {
-            // TODO: need a way to change dbg.sstate = StepState::STOP;
+            sstate = StepState::STOP;
         }
         r->PC += length;
     }
@@ -959,7 +963,6 @@ public:
     }
 };
 
-
 class InstructionDAA : public Instruction
 {
 public:
@@ -970,7 +973,26 @@ public:
 
     virtual void execute( Memory* m, Registers* r )
     {
-        // TODO
+        if ( !r->Flag.N ) { // after an addition
+            if ( r->Flag.C || r->A > 0x99 ) {
+                r->A += 0x60;
+                r->Flag.C = 1;
+            }
+            if ( r->Flag.H || ( r->A & 0x0f ) > 0x09 ) {
+                r->A += 0x6;
+            }
+        } else { // after a subtraction
+            if ( r->Flag.C ) {
+                r->A -= 0x60;
+            }
+            if ( r->Flag.H ) {
+                r->A -= 0x6;
+            }
+        }
+
+        r->Flag.Z = ( r->A == 0 );
+        r->Flag.H = 0;
+
         r->PC += length;
     }
 
@@ -979,7 +1001,6 @@ public:
         snprintf( dst, size, "DAA" );
     }
 };
-
 
 class InstructionJRZ : public Instruction
 {
@@ -2546,16 +2567,18 @@ public:
 
 class InstructionHALT : public Instruction
 {
+private:
+    StepState& sstate;
+
 public:
-    InstructionHALT( void )
-        : Instruction::Instruction( 1 )
+    InstructionHALT( StepState& state )
+        : Instruction::Instruction( 1 ), sstate( state )
     {
     }
 
     virtual void execute( Memory* m, Registers* r )
     {
-        // TODO: Implement HALT
-        // probably change StepState
+        sstate = StepState::STOP;
         r->PC += length;
     }
 
@@ -4186,7 +4209,7 @@ public:
     virtual void execute( Memory* m, Registers* r )
     {
         push( m, r, r->PC + length );
-        r->PC = 0x00;
+        r->PC = 0x0000;
     }
 
     virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
@@ -4260,7 +4283,6 @@ public:
     }
 };
 
-
 class InstructionCallZ : public Instruction
 {
 public:
@@ -4296,7 +4318,7 @@ public:
     virtual void execute( Memory* m, Registers* r )
     {
         uint16_t addr = *(uint16_t*)&m->rom[r->PC + 1];
-        push( m, r, addr);
+        push( m, r, addr );
         r->PC = addr;
     }
 
@@ -4336,8 +4358,8 @@ public:
 
     virtual void execute( Memory* m, Registers* r )
     {
-        // TODO
-        r->PC += length;
+        push( m, r, r->PC + length );
+        r->PC = 0x0008;
     }
 
     virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
@@ -4487,7 +4509,7 @@ public:
     virtual void execute( Memory* m, Registers* r )
     {
         push( m, r, r->PC + length );
-        r->PC = 0x10;
+        r->PC = 0x0010;
     }
 
     virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
@@ -4618,7 +4640,7 @@ public:
     virtual void execute( Memory* m, Registers* r )
     {
         push( m, r, r->PC + length );
-        r->PC = 0x18;
+        r->PC = 0x0018;
     }
 
     virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
@@ -4738,7 +4760,7 @@ public:
     virtual void execute( Memory* m, Registers* r )
     {
         push( m, r, r->PC + length );
-        r->PC = 0x20;
+        r->PC = 0x0020;
     }
 
     virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
@@ -4757,14 +4779,14 @@ public:
 
     virtual void execute( Memory* m, Registers* r )
     {
-        r->SP = add<uint16_t>( r, r->SP, (int8_t)m->rom[r->PC + 1] );
+        r->SP = add< uint16_t >( r, r->SP, (int8_t)m->rom[r->PC + 1] );
         r->Flag.Z = 0;
         r->PC += length;
     }
 
     virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
     {
-        snprintf( dst, size, "ADD SP, %#04x", (uint16_t)(int8_t)mem->rom[addr + 1] );
+        snprintf( dst, size, "ADD SP, %#04x", ( uint16_t )(int8_t)mem->rom[addr + 1] );
     }
 };
 
@@ -4837,8 +4859,8 @@ public:
 
     virtual void execute( Memory* m, Registers* r )
     {
-        // TODO
-        r->PC += length;
+        push( m, r, r->PC + length );
+        r->PC = 0x0028;
     }
 
     virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
@@ -4927,7 +4949,6 @@ public:
     }
 };
 
-
 class InstructionPushAF : public Instruction
 {
 public:
@@ -4978,8 +4999,8 @@ public:
 
     virtual void execute( Memory* m, Registers* r )
     {
-        // TODO
-        r->PC += length;
+        push( m, r, r->PC + length );
+        r->PC = 0x0030;
     }
 
     virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
@@ -5005,7 +5026,7 @@ public:
 
     virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
     {
-        snprintf( dst, size, "LD HL, SP + %#04x", (uint16_t)(int8_t)mem->rom[addr + 1] );
+        snprintf( dst, size, "LD HL, SP + %#04x", ( uint16_t )(int8_t)mem->rom[addr + 1] );
     }
 };
 
@@ -5099,8 +5120,8 @@ public:
 
     virtual void execute( Memory* m, Registers* r )
     {
-        // TODO
-        r->PC += length;
+        push( m, r, r->PC + length );
+        r->PC = 0x0038;
     }
 
     virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
@@ -5109,14 +5130,11 @@ public:
     }
 };
 
-
 /* ===================================================================
 
                   Extended Instructions (0xCB)
 
-   ================================================================ */ 
-
-
+   ================================================================ */
 
 class InstructionEx : public Instruction
 {
@@ -5133,7 +5151,7 @@ public:
 
     virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
     {
-        opcode[mem->rom[addr + 1]]->dis( dst, size, mem, addr );        
+        opcode[mem->rom[addr + 1]]->dis( dst, size, mem, addr );
     }
 
     static uint8_t rlc( Registers* r, uint8_t operand )
@@ -5200,7 +5218,7 @@ public:
         r->Flag.N = r->Flag.H = 0;
         r->Flag.C = operand & 1;
 
-        return ( result | (operand & 0x80 ) );
+        return ( result | ( operand & 0x80 ) );
     }
 
     static uint8_t swap( Registers* r, uint8_t operand )
@@ -5281,8 +5299,6 @@ public:
     }
 };
 
-
-
 class InstructionExRLCD : public Instruction
 {
 public:
@@ -5302,8 +5318,6 @@ public:
         snprintf( dst, size, "RLC D" );
     }
 };
-
-
 
 class InstructionExRLCE : public Instruction
 {
@@ -5325,7 +5339,6 @@ public:
     }
 };
 
-
 class InstructionExRLCH : public Instruction
 {
 public:
@@ -5345,8 +5358,6 @@ public:
         snprintf( dst, size, "RLC H" );
     }
 };
-
-
 
 class InstructionExRLCL : public Instruction
 {
@@ -5368,7 +5379,6 @@ public:
     }
 };
 
-
 class InstructionExRLCHL : public Instruction
 {
 public:
@@ -5388,8 +5398,6 @@ public:
         snprintf( dst, size, "RLC (HL)" );
     }
 };
-
-
 
 class InstructionExRLCA : public Instruction
 {
@@ -5411,7 +5419,6 @@ public:
     }
 };
 
-
 class InstructionExRRCB : public Instruction
 {
 public:
@@ -5431,7 +5438,6 @@ public:
         snprintf( dst, size, "RRC B" );
     }
 };
-
 
 class InstructionExRRCC : public Instruction
 {
@@ -5513,7 +5519,6 @@ public:
     }
 };
 
-
 class InstructionExRRCL : public Instruction
 {
 public:
@@ -5533,7 +5538,6 @@ public:
         snprintf( dst, size, "RRC L" );
     }
 };
-
 
 class InstructionExRRCHL : public Instruction
 {
@@ -6435,7 +6439,6 @@ public:
     }
 };
 
-
 class InstructionExSRLE : public Instruction
 {
 public:
@@ -6536,7 +6539,6 @@ public:
     }
 };
 
-
 class InstructionExBit0B : public Instruction
 {
 public:
@@ -6597,7 +6599,6 @@ public:
     }
 };
 
-
 class InstructionExBit0E : public Instruction
 {
 public:
@@ -6618,7 +6619,6 @@ public:
     }
 };
 
-
 class InstructionExBit0H : public Instruction
 {
 public:
@@ -6638,7 +6638,6 @@ public:
         snprintf( dst, size, "BIT 0, H" );
     }
 };
-
 
 class InstructionExBit0L : public Instruction
 {
@@ -7839,7 +7838,6 @@ public:
         snprintf( dst, size, "RES 0, B" );
     }
 };
-
 
 class InstructionExRes0C : public Instruction
 {
@@ -10381,12 +10379,6 @@ public:
     }
 };
 
-
-
-
-
-
-
 InstructionEx::InstructionEx( void )
     : Instruction::Instruction( 2 )
 {
@@ -10664,10 +10656,4 @@ InstructionEx::InstructionEx( void )
     opcode[0xFE] = new InstructionExSet7HL();
     opcode[0xFF] = new InstructionExSet7A();
 
-
-    for ( int i = 0; i < _countof( opcode ); i++ ) {
-        if ( opcode[i] == nullptr ) {
-            opcode[i] = new Instruction();
-        }
-    }
 }

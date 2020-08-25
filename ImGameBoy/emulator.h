@@ -3,6 +3,7 @@
 #include "memory.h"
 #include "debugger.h"
 #include "instruction.h"
+#include "shared.h"
 
 uint8_t bootrom[] = {
     0x31,
@@ -293,7 +294,7 @@ public:
         opcode[0x0E] = new InstructionLdC();
         opcode[0x0F] = new InstructionRRCA();
 
-        opcode[0x10] = new InstructionStop();
+        opcode[0x10] = new InstructionStop( dbg.sstate );
         opcode[0x11] = new InstructionLdDEu16();
         opcode[0x12] = new InstructionLdDEA();
         opcode[0x13] = new InstructionIncDE();
@@ -317,7 +318,7 @@ public:
         opcode[0x24] = new InstructionIncH();
         opcode[0x25] = new InstructionDecH();
         opcode[0x26] = new InstructionLdH();
-        //TODO opcode[0x27] = new InstructionDAA();
+        opcode[0x27] = new InstructionDAA();
         opcode[0x28] = new InstructionJRZ();
         opcode[0x29] = new InstructionAddHLHL();
         opcode[0x2A] = new InstructionLdAHLI();
@@ -401,7 +402,7 @@ public:
         opcode[0x73] = new InstructionLdHLE();
         opcode[0x74] = new InstructionLdHLH();
         opcode[0x75] = new InstructionLdHLL();
-        opcode[0x76] = new InstructionHALT();
+        opcode[0x76] = new InstructionHALT( dbg.sstate );
         opcode[0x77] = new InstructionLdHLA();
         opcode[0x78] = new InstructionLdAB();
         opcode[0x79] = new InstructionLdAC();
@@ -540,15 +541,6 @@ public:
         opcode[0xFE] = new InstructionCpA();
         opcode[0xFF] = new InstructionRST38();
 
-
-
-
-        for ( int i = 0; i < _countof( opcode ); i++ )
-        {
-            if ( opcode[i] == nullptr ) {
-                opcode[i] = new Instruction();
-            }
-        }
     }
 
     ~Emulator( void )

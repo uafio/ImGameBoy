@@ -4,13 +4,7 @@
 #include "memory.h"
 #include "registers.h"
 #include "instruction.h"
-
-enum class StepState
-{
-    STOP = 0,
-    RUN,
-    STEP,
-};
+#include "shared.h"
 
 class Debugger
 {
@@ -186,7 +180,6 @@ public:
             }
             addr += cur->length;
         }
-
 
         ImGui::End();
     }
