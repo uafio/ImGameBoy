@@ -8776,6 +8776,326 @@ public:
     }
 };
 
+class InstructionExRes6B : public Instruction
+{
+public:
+    InstructionExRes6B( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::res( r->B, 6 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RES 6, B" );
+    }
+};
+
+class InstructionExRes6C : public Instruction
+{
+public:
+    InstructionExRes6C( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::res( r->C, 6 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RES 6, C" );
+    }
+};
+
+class InstructionExRes6D : public Instruction
+{
+public:
+    InstructionExRes6D( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::res( r->D, 6 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RES 6, D" );
+    }
+};
+
+class InstructionExRes6E : public Instruction
+{
+public:
+    InstructionExRes6E( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::res( r->E, 6 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RES 6, E" );
+    }
+};
+
+class InstructionExRes6H : public Instruction
+{
+public:
+    InstructionExRes6H( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::res( r->H, 6 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RES 6, H" );
+    }
+};
+
+class InstructionExRes6L : public Instruction
+{
+public:
+    InstructionExRes6L( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::res( r->L, 6 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RES 6, L" );
+    }
+};
+
+class InstructionExRes6HL : public Instruction
+{
+public:
+    InstructionExRes6HL( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::res( m->rom[r->HL], 6 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RES 6, (HL)" );
+    }
+};
+
+class InstructionExRes6A : public Instruction
+{
+public:
+    InstructionExRes6A( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::res( r->A, 6 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RES 6, A" );
+    }
+};
+
+class InstructionExRes7B : public Instruction
+{
+public:
+    InstructionExRes7B( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::res( r->B, 7 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RES 7, B" );
+    }
+};
+
+class InstructionExRes7C : public Instruction
+{
+public:
+    InstructionExRes7C( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::res( r->C, 7 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RES 7, C" );
+    }
+};
+
+class InstructionExRes7D : public Instruction
+{
+public:
+    InstructionExRes7D( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::res( r->D, 7 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RES 7, D" );
+    }
+};
+
+class InstructionExRes7E : public Instruction
+{
+public:
+    InstructionExRes7E( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::res( r->E, 7 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RES 7, E" );
+    }
+};
+
+class InstructionExRes7H : public Instruction
+{
+public:
+    InstructionExRes7H( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::res( r->H, 7 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RES 7, H" );
+    }
+};
+
+class InstructionExRes7L : public Instruction
+{
+public:
+    InstructionExRes7L( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::res( r->L, 7 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RES 7, L" );
+    }
+};
+
+class InstructionExRes7HL : public Instruction
+{
+public:
+    InstructionExRes7HL( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::res( m->rom[r->HL], 7 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RES 7, (HL)" );
+    }
+};
+
+class InstructionExRes7A : public Instruction
+{
+public:
+    InstructionExRes7A( void )
+        : Instruction::Instruction( 2 )
+    {
+    }
+
+    virtual void execute( Memory* m, Registers* r )
+    {
+        InstructionEx::res( r->A, 7 );
+        r->PC += length;
+    }
+
+    virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
+    {
+        snprintf( dst, size, "RES 7, A" );
+    }
+};
+
 
 
 
@@ -8974,6 +9294,22 @@ InstructionEx::InstructionEx( void )
     opcode[0xAE] = new InstructionExRes5HL();
     opcode[0xAF] = new InstructionExRes5A();
 
+    opcode[0xB0] = new InstructionExRes6B();
+    opcode[0xB1] = new InstructionExRes6C();
+    opcode[0xB2] = new InstructionExRes6D();
+    opcode[0xB3] = new InstructionExRes6E();
+    opcode[0xB4] = new InstructionExRes6H();
+    opcode[0xB5] = new InstructionExRes6L();
+    opcode[0xB6] = new InstructionExRes6HL();
+    opcode[0xB7] = new InstructionExRes6A();
+    opcode[0xB8] = new InstructionExRes7B();
+    opcode[0xB9] = new InstructionExRes7C();
+    opcode[0xBA] = new InstructionExRes7D();
+    opcode[0xBB] = new InstructionExRes7E();
+    opcode[0xBC] = new InstructionExRes7H();
+    opcode[0xBD] = new InstructionExRes7L();
+    opcode[0xBE] = new InstructionExRes7HL();
+    opcode[0xBF] = new InstructionExRes7A();
 
 
 
