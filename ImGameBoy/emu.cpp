@@ -70,7 +70,9 @@ void wingb( GLFWwindow* window )
         emu->debugger();    
     }
 
-    emu->step();
+    for ( int cycle = 0; cycle < 70221; cycle += 8 ) {
+        emu->step();
+    }
 
     ImGui::Begin( "Main" );
     emu->draw();
