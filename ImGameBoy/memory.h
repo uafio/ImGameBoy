@@ -2,34 +2,68 @@
 #include <Windows.h>
 #include <stdint.h>
 
-struct Memory
+class Vram
 {
+private:
+    uint8_t _ram[0x2000];
+
+public:
+    Vram( void )
+        : _ram{ 0 }
+    {
+    }
+
+    uint8_t* ram( void )
+    {
+        return _ram;
+    }
+
+    uint8_t* block0( void )
+    {
+        return &_ram[0];
+    }
+
+    uint8_t* block1( void )
+    {
+        return &_ram[0x800];
+    }
+
+    uint8_t* block2( void )
+    {
+        return &_ram[0x1000];
+    }
+
+    uint8_t* tile( uint8_t index )
+    {
+        return &_ram[index * 0x10];
+    }
+};
+
+struct Memory {
     union {
-        uint8_t map[0x10000];               // full memory map
+        uint8_t map[0x10000]; // full memory map
 
         struct {
-        
             union {
-                uint8_t rom[0x8000];        // ROM from cartridge
-                uint8_t bank[2][0x4000];    // Bank 00-01
+                uint8_t rom[0x8000]; // ROM from cartridge
+                uint8_t bank[2][0x4000]; // Bank 00-01
             };
 
-            uint8_t vram[0x2000];           // Video RAM
-            uint8_t eram[0x2000];           // External RAM
+            Vram vram; // Video RAM
+            uint8_t eram[0x2000]; // External RAM
 
             union {
-                uint8_t wram[0x2000];       // Work RAM
-                uint8_t wbank[2][0x1000];   // Work RAM Bank 0-1
+                uint8_t wram[0x2000]; // Work RAM
+                uint8_t wbank[2][0x1000]; // Work RAM Bank 0-1
             };
 
-            uint8_t echo[0x1e00];           // Mirror of C000~DDFF (ECHO RAM)	Typically not used
-            uint8_t sat[0xa0];              // Sprite Attribute Table
-            uint8_t NA[0x60];               // Not Usable
-            uint8_t io[0x80];               // I/O Registers
-            uint8_t hram[0x7f];             // High RAM
-            bool ie;                        // Interrupt Enable Register
+            uint8_t echo[0x1e00]; // Mirror of C000~DDFF (ECHO RAM)	Typically not used
+            uint8_t sat[0xa0]; // Sprite Attribute Table
+            uint8_t NA[0x60]; // Not Usable
+            uint8_t io[0x80]; // I/O Registers
+            uint8_t hram[0x7f]; // High RAM
+            bool ie; // Interrupt Enable Register
         };
-
     };
 
     Memory( void )
@@ -37,6 +71,8 @@ struct Memory
     {
     }
 };
+
+static_assert( sizeof( Vram ) == 0x2000, "VRAM incorrect size" );
 
 static_assert( sizeof( Memory ) == 0x10000, "Memory not 32kB" );
 static_assert( offsetof( Memory, map ) == 0, "Invalid memory map start" );
@@ -52,5 +88,3 @@ static_assert( offsetof( Memory, NA ) == 0xFEA0, "Not Usable" );
 static_assert( offsetof( Memory, io ) == 0xFF00, "I/O Registers" );
 static_assert( offsetof( Memory, hram ) == 0xFF80, "High RAM" );
 static_assert( offsetof( Memory, ie ) == 0xFFFF, "Interrupt Enable Register" );
-
-

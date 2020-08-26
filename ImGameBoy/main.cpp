@@ -48,10 +48,12 @@ static void glfw_error_callback( int error, const char* description )
     fprintf( stderr, "Glfw Error %d: %s\n", error, description );
 }
 
-#ifdef _WIN32
-int WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd )
-#elif __gnu_linux__
+#if 1
+#pragma comment( linker, "/subsystem:console" )
 int main( int argc, char** argv )
+#else
+#pragma comment( linker, "/subsystem:windows" )
+int WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpStr, int cmd )
 #endif
 {
     // Setup window

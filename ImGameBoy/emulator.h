@@ -268,14 +268,14 @@ class Emulator
 {
 private:
     Registers r;
-    Memory m;
+    Memory mem;
     Instruction* opcode[0x100];
     Debugger dbg;
 
 public:
     Emulator( void )
     {
-        memcpy( m.map, bootrom, sizeof( bootrom ) );
+        memcpy( mem.map, bootrom, sizeof( bootrom ) );
 
         opcode[0x00] = new InstructionNop();
         opcode[0x01] = new InstructionLdBCu16();
@@ -540,7 +540,6 @@ public:
         opcode[0xFB] = new InstructionEI();
         opcode[0xFE] = new InstructionCpA();
         opcode[0xFF] = new InstructionRST38();
-
     }
 
     ~Emulator( void )
@@ -550,7 +549,7 @@ public:
     void step( void )
     {
         if ( dbg.sstate != StepState::STOP ) {
-            opcode[m.map[r.PC]]->execute( &m, &r );
+            opcode[mem.map[r.PC]]->execute( &mem, &r );
             if ( dbg.sstate == StepState::STEP ) {
                 dbg.sstate = StepState::STOP;
             }
@@ -559,12 +558,32 @@ public:
 
     void draw( void )
     {
+        // tile is 16 bytes array
+        uint8_t* tile = mem.vram.tile( 0 );
+
+        // tile row is 2 bytes each
+        for ( int row = 0; row < 8; row++ ) {
+
+            uint8_t* trow = &tile[row * 2];
+
+            for ( int col = 7; col >= 0; col-- ) {
+
+                uint8_t pixel = 0;
+                pixel = trow[0] & ( 1 << col );
+                pixel <<= 1;
+                pixel |= trow[1] & ( 1 << col );
+                ImGui::Text( "%d", pixel );
+                if ( col ) {
+                    ImGui::SameLine();
+                }
+            }
+        }
     }
 
     void debugger( void )
     {
-        dbg.show_memory( &m );
+        dbg.show_memory( &mem );
         dbg.show_registers( &r );
-        dbg.show_disassembly( &m, &r, opcode );
+        dbg.show_disassembly( &mem, &r, opcode );
     }
 };
