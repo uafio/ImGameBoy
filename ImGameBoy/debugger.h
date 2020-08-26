@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 #include "imgui/imgui.h"
 #include "imgui/imgui_memory_editor.h"
 #include "memory.h"
@@ -12,9 +13,12 @@ private:
     MemoryEditor mViewer;
 
 public:
+    std::vector< uint16_t > bps;
     StepState sstate;
+
     Debugger( void )
     {
+        bps.reserve( 100 );
     }
 
     ~Debugger( void )
@@ -107,7 +111,6 @@ public:
 
         ImGui::SameLine();
 
-
         if ( r->Flag.N ) {
             ImGui::PushStyleColor( ImGuiCol_Text, ImVec4( 0.0f, 1.0f, 0.85f, 1.0f ) );
         } else {
@@ -129,8 +132,8 @@ public:
         if ( ImGui::IsItemClicked( ImGuiMouseButton_Left ) ) {
             r->Flag.H ^= 1;
         }
-        ImGui::PopStyleColor();        
-        
+        ImGui::PopStyleColor();
+
         ImGui::SameLine();
         if ( r->Flag.C ) {
             ImGui::PushStyleColor( ImGuiCol_Text, ImVec4( 0.0f, 1.0f, 0.85f, 1.0f ) );
@@ -141,8 +144,7 @@ public:
         if ( ImGui::IsItemClicked( ImGuiMouseButton_Left ) ) {
             r->Flag.C ^= 1;
         }
-        ImGui::PopStyleColor();   
-
+        ImGui::PopStyleColor();
 
         if ( ImGui::Button( "Run" ) ) {
             sstate = StepState::RUN;
@@ -156,7 +158,6 @@ public:
             sstate = StepState::STOP;
         }
 
-
         ImGui::Unindent();
         ImGui::End();
     }
@@ -168,20 +169,31 @@ public:
         // TODO: Implement ImGui List Clipper
 
         for ( uint16_t addr = 0; addr < _countof( mem->rom ); ) {
+
             Instruction* cur = op[mem->rom[addr]];
 
             char dis[64];
-            cur->dis( dis, sizeof( dis ), mem, addr );
+            snprintf( dis, sizeof( dis ), "  %04X: ", addr );
+
+            cur->dis( &dis[8], sizeof( dis ) - 8, mem, addr );
 
             if ( r->PC == addr ) {
-                ImGui::Text( "> %04X: %s", addr, dis );
-            } else {
-                ImGui::Text( "  %04X: %s", addr, dis );
+                dis[0] = '>';
             }
+
+            bool selected = std::find( bps.begin(), bps.end(), addr ) != bps.end();
+            if ( ImGui::Selectable( dis, selected ) ) {
+                if ( selected ) {
+                    bps.erase( std::find( bps.begin(), bps.end(), addr ) );
+                } else {
+                    bps.push_back( addr );
+                }
+            }
+
+
             addr += cur->length;
         }
 
         ImGui::End();
     }
-
 };

@@ -16,6 +16,9 @@
 
 #include "emulator.h"
 
+
+
+
 void wingb( GLFWwindow* window )
 {
     static Emulator* emu = new Emulator();

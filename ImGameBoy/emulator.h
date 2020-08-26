@@ -554,6 +554,11 @@ public:
                 dbg.sstate = StepState::STOP;
             }
         }
+
+        if ( std::find( dbg.bps.begin(), dbg.bps.end(), r.PC ) != dbg.bps.end() ) {
+            dbg.sstate = StepState::STOP;
+        }
+
     }
 
     void draw( void )
