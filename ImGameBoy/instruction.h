@@ -671,13 +671,13 @@ public:
 
     virtual void execute( Memory* m, Registers* r )
     {
-        r->PC += m->rom[r->PC + 1];
+        r->PC += (int8_t)m->rom[r->PC + 1];
         r->PC += length;
     }
 
     virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
     {
-        snprintf( dst, size, "JP %#x", addr + length + mem->rom[addr + 1] );
+        snprintf( dst, size, "JP %#x", addr + length + (int8_t)mem->rom[addr + 1] );
     }
 };
 
@@ -832,14 +832,14 @@ public:
     virtual void execute( Memory* m, Registers* r )
     {
         if ( r->Flag.Z == 0 ) {
-            r->PC += m->rom[r->PC + 1];
+            r->PC += (int8_t)m->rom[r->PC + 1];
         }
         r->PC += length;
     }
 
     virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
     {
-        snprintf( dst, size, "JR NZ, %#04x", addr + length + mem->rom[addr + 1] );
+        snprintf( dst, size, "JR NZ, %#04x", addr + length + (int8_t)mem->rom[addr + 1] );
     }
 };
 
@@ -1013,14 +1013,14 @@ public:
     virtual void execute( Memory* m, Registers* r )
     {
         if ( r->Flag.Z ) {
-            r->PC += m->rom[r->PC + 1];
+            r->PC += (int8_t)m->rom[r->PC + 1];
         }
         r->PC += length;
     }
 
     virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
     {
-        snprintf( dst, size, "JR Z, %#04x", addr + length + mem->rom[addr + 1] );
+        snprintf( dst, size, "JR Z, %#04x", addr + length + (int8_t)mem->rom[addr + 1] );
     }
 };
 
@@ -1176,14 +1176,14 @@ public:
     virtual void execute( Memory* m, Registers* r )
     {
         if ( r->Flag.C == 0 ) {
-            r->PC += m->rom[r->PC + 1];
+            r->PC += (int8_t)m->rom[r->PC + 1];
         }
         r->PC += length;
     }
 
     virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
     {
-        snprintf( dst, size, "JR NC, %#04x", addr + length + mem->rom[addr + 1] );
+        snprintf( dst, size, "JR NC, %#04x", addr + length + (int8_t)mem->rom[addr + 1] );
     }
 };
 
@@ -1339,14 +1339,14 @@ public:
     virtual void execute( Memory* m, Registers* r )
     {
         if ( r->Flag.C ) {
-            r->PC += m->rom[r->PC + 1];
+            r->PC += (int8_t)m->rom[r->PC + 1];
         }
         r->PC += length;
     }
 
     virtual void dis( char* dst, size_t size, Memory* mem, uint16_t addr )
     {
-        snprintf( dst, size, "JR C, %#04x", addr + length + mem->rom[addr + 1] );
+        snprintf( dst, size, "JR C, %#04x", addr + length + (int8_t)mem->rom[addr + 1] );
     }
 };
 
