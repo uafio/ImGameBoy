@@ -1217,7 +1217,7 @@ public:
 
     virtual void execute( Memory* m, Registers* r )
     {
-        r->A = m->rom[r->HL--];
+        m->rom[r->HL--] = r->A;
         r->PC += length;
     }
 
